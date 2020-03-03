@@ -28,3 +28,6 @@ def message(userId,data):
     if keys == []:
         keys = None
     return message,keys,img
+
+def storyAdd(storyCsv):
+    pass

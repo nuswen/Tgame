@@ -11,12 +11,16 @@ from time import sleep
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
-    poster(bot, msg.chat.id, text='text')
+    poster(bot, msg.chat.id, text=msg)
 
 @bot.message_handler(content_types=['text'])
 def text(msg):
     pass
   
+@bot.message_handler(content_types=['file'])
+def CommandCsv(msg):
+    poster(bot, msg.chat.id, text=msg)
+
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     pass

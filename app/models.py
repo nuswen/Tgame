@@ -2,13 +2,13 @@ from app import db
 from sqlalchemy.dialects.postgresql import ARRAY
 
 
-"""class teleusers(db.Model):
-    Id = db.Column(db.Integer, primary_key=True)
-    Point = db.Column(db.Text)
-    Tags = db.Column(ARRAY(db.Text))
-
-
-class data(db.Model):
-    Id = db.Column(db.Integer, primary_key=True)
-    Data = db.Column(db.Text)
-    Prepare = db.Column(db.Boolean)"""
+class story(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.Text)
+    answers = db.Column(db.Jsonb)
+    link = db.Column(db.Integer)
+    timeout = db.Column(db.Integer)
+    branch = db.Column(db.Text)
+    photo = db.Column(db.Text)
+    audio = db.Column(db.Text)
+    speclink = db.Column(db.Jsonb)
