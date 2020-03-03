@@ -17,7 +17,7 @@ def hi_msg(msg):
 def text(msg):
     pass
   
-@bot.message_handler(content_types=['file'])
+@bot.message_handler(content_types=['document'])
 def CommandCsv(msg):
     poster(bot, msg.chat.id, text=msg)
 
