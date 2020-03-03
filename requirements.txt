@@ -1,0 +1,5 @@
+sqlalchemy
+pyTelegramBotAPI
+flask
+flask-sqlalchemy
+psycopg2
