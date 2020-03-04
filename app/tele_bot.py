@@ -11,7 +11,7 @@ from time import sleep
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
-    text = models.story.query().order_by(ident).first()
+    #text = models.story.query().order_by(models.story.ident)
     poster(bot, msg.chat.id, text=text)
 
 @bot.message_handler(content_types=['text'])
@@ -21,7 +21,7 @@ def text(msg):
 @bot.message_handler(content_types=['document'])
 def CommandCsv(msg):
     fileId = msg.json['document']['file_id']
-    storyAdd(fileId)
+    models.story.upStory(fileId)
     poster(bot, msg.chat.id, text=fileId)
 
 @bot.callback_query_handler(func=lambda call: True)
