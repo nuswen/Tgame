@@ -39,7 +39,7 @@ def tryInt(string):
     try:
         num = int(string)
     except:
-        num = 0
+        num = None
     return num
 
 def storyAdd(idFileStory):
@@ -54,10 +54,11 @@ def storyAdd(idFileStory):
     csvFile.pop(0)
 
     for row in csvFile:
-        print(row)
+
         ident,message,answers,link,timeout,branch,photo,audio,speclink = row
 
         ident = tryInt(ident)
+        print(ident)
 
         if answers or answers.isspace():
             answers = json.loads(answers)
