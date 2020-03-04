@@ -42,11 +42,11 @@ def storyAdd(idFileStory):
     path = 'https://api.telegram.org/file/bot'+environ['token']+'/'
     csvStream = requests.get(path+pathFile,stream = True)
     vFile = StringIO(csvStream.text)
-    csv = list(csv.reader(vFile))
+    csvFile = list(csv.reader(vFile))
     vFile.close()
-    csv.pop(0)
+    csvFile.pop(0)
 
-    for row in csv:
+    for row in csvFile:
         if row[2]:
             row[2] = json.loads(row[2])
         if row[8]:
