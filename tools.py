@@ -54,6 +54,7 @@ def storyAdd(idFileStory):
     csvFile.pop(0)
 
     for row in csvFile:
+        print(row)
         ident,message,answers,link,timeout,branch,photo,audio,speclink = row
 
         ident = tryInt(ident)
