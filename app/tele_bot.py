@@ -19,7 +19,7 @@ def text(msg):
   
 @bot.message_handler(content_types=['document'])
 def CommandCsv(msg):
-    fileId = msg.json['document']
+    fileId = msg.json['file_id']
     poster(bot, msg.chat.id, text=fileId)
 
 @bot.callback_query_handler(func=lambda call: True)
