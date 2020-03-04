@@ -22,8 +22,7 @@ def text(msg):
 @bot.message_handler(content_types=['document'])
 def CommandCsv(msg):
     fileId = msg.json['document']['file_id']
-    story.upStory(fileId)
-    poster(bot, msg.chat.id, text=fileId)
+    poster(bot, msg.chat.id, text=story.getIdent)
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
