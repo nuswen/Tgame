@@ -42,7 +42,7 @@ def tryInt(string):
         num = None
     return num
 
-def storyAdd(idFileStory):
+"""def storyAdd(idFileStory):
     telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
     jTelePath = json.loads(telePath.text)
     pathFile = jTelePath['result']['file_path']
@@ -84,3 +84,4 @@ def storyAdd(idFileStory):
     
     db.session.commit()
         
+"""

@@ -5,6 +5,7 @@ import json
 import csv
 from os import environ
 from io import StringIO
+from tools import *
 
 
 class story(db.Model):
@@ -46,7 +47,7 @@ class story(db.Model):
                 speclink = json.loads(speclink)
 
             
-            newRow = models.story( 
+            newRow = self( 
                                     ident = ident,
                                     message = message,
                                     answers = answers,
@@ -59,6 +60,6 @@ class story(db.Model):
             db.session.add(newRow)
         CurStory = self.query.all()
         for row in CurStory:
-            db.session.delete(u)
+            db.session.delete(row)
 
         db.session.commit()
