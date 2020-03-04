@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 
 
 class story(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id_ = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.Text)
     answers = db.Column(JSONB)
     link = db.Column(db.Integer)

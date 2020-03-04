@@ -52,11 +52,11 @@ def storyAdd(idFileStory):
         if row[8]:
             row[8] = json.loads(row[8])
         newRow = models.story( 
-                                id = row[0],
+                                id = int(row[0]),
                                 message = row[1],
                                 answers = row[2],
-                                link = row[3],
-                                timeout = row[4],
+                                link = int(row[3]),
+                                timeout = int(row[4]),
                                 branch = row[5],
                                 photo = row[6],
                                 audio = row[7],
