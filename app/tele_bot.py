@@ -3,12 +3,11 @@ from tools import *
 from app import models
 from app import bot
 from app import db
+from app import story
 import json
 import re
 import requests
 from time import sleep
-
-story = models.story()
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):

@@ -11,6 +11,8 @@ db = SQLAlchemy(app)
 
 from app import tele_bot, models
 
+story = models.story()
+
 
 @app.route("/"+environ['token'], methods=['POST'])
 def getMessage():

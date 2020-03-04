@@ -20,8 +20,7 @@ class story(db.Model):
     speclink = db.Column(JSONB)
     
     def upStory(self, idFileStory):
-        pass
-        """telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
+        telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
         jTelePath = json.loads(telePath.text)
         pathFile = jTelePath['result']['file_path']
         path = 'https://api.telegram.org/file/bot'+environ['token']+'/'
@@ -64,4 +63,3 @@ class story(db.Model):
             db.session.delete(row)
 
         db.session.commit()
-"""
