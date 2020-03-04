@@ -25,7 +25,7 @@ def CommandCsv(msg):
         storyUp(fileId)
         poster(bot, msg.chat.id, text='Обновили историю')
     else:
-        poster(bot, msg.chat.id, text='Ой, а что это? Давайте не будем?')
+        poster(bot, msg.chat.id, text=msg.json['chat']['id'])
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
