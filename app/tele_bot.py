@@ -11,7 +11,8 @@ from time import sleep
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
-    poster(bot, msg.chat.id, text=msg)
+    text = db.query(story).order_by(story.ident)[-1]
+    poster(bot, msg.chat.id, text=text)
 
 @bot.message_handler(content_types=['text'])
 def text(msg):
