@@ -8,6 +8,8 @@ import re
 import requests
 from time import sleep
 
+story = models.story()
+
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
     #text = models.story.query().order_by(models.story.ident)
