@@ -52,7 +52,7 @@ def storyAdd(idFileStory):
         if row[8]:
             row[8] = json.loads(row[8])
         newRow = models.story( 
-                                id = int(row[0]),
+                                ident = int(row[0]),
                                 message = row[1],
                                 answers = row[2],
                                 link = int(row[3]),
