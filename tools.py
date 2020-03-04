@@ -53,6 +53,10 @@ def storyUp(idFileStory):
     vFile.close()
     csvFile.pop(0)
 
+    allStary = models.story.query.all()
+    for row in allStary:
+        db.session.delete(row)
+
     for row in csvFile:
 
         ident,message,answers,link,timeout,branch,photo,audio,speclink = row
@@ -68,10 +72,6 @@ def storyUp(idFileStory):
 
         if speclink or speclink.isspace():
             speclink = json.loads(speclink)
-
-        allStary = models.story.query.all()
-        for row in allStary:
-            db.session.delete(row)
         
         newRow = models.story( 
                                 ident = ident,
