@@ -35,6 +35,13 @@ def message(userId,data):
         keys = None
     return message,keys,img
 
+def tryInt(string):
+    try:
+        num = int(string)
+    except:
+        num = 0
+    return num
+
 def storyAdd(idFileStory):
     telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
     jTelePath = json.loads(telePath.text)
@@ -47,20 +54,30 @@ def storyAdd(idFileStory):
     csvFile.pop(0)
 
     for row in csvFile:
-        if row[2]:
-            row[2] = json.loads(row[2])
-        if row[8]:
-            row[8] = json.loads(row[8])
+        ident,message,answers,link,timeout,branch,photo,audio,speclink = row
+
+        ident = tryInt(ident)
+
+        if answers or answers.isspace():
+            answers = json.loads(answers)
+
+        link = tryInt(link)
+        timeout = tryInt(timeout)
+
+        if speclink or speclink.isspace():
+            speclink = json.loads(speclink)
+
+        
         newRow = models.story( 
-                                ident = int(row[0]),
-                                message = row[1],
-                                answers = row[2],
-                                link = int(row[3]),
-                                timeout = int(row[4]),
-                                branch = row[5],
-                                photo = row[6],
-                                audio = row[7],
-                                speclink = row[8])
+                                ident = ident,
+                                message = message,
+                                answers = answers,
+                                link = link,
+                                timeout = timeout,
+                                branch = branch,
+                                photo = photo,
+                                audio = audio,
+                                speclink = speclink)
         db.session.add(newRow)
     
     db.session.commit()
