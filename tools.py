@@ -42,7 +42,7 @@ def tryInt(string):
         num = None
     return num
 
-"""def storyAdd(idFileStory):
+def storyUp(idFileStory):
     telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
     jTelePath = json.loads(telePath.text)
     pathFile = jTelePath['result']['file_path']
@@ -69,6 +69,9 @@ def tryInt(string):
         if speclink or speclink.isspace():
             speclink = json.loads(speclink)
 
+        allStary = models.query.all()
+        for row in allStary:
+            db.session.delete(row)
         
         newRow = models.story( 
                                 ident = ident,
@@ -83,5 +86,3 @@ def tryInt(string):
         db.session.add(newRow)
     
     db.session.commit()
-        
-"""
