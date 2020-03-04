@@ -69,7 +69,7 @@ def storyUp(idFileStory):
         if speclink or speclink.isspace():
             speclink = json.loads(speclink)
 
-        allStary = models.query.all()
+        allStary = models.story.query.all()
         for row in allStary:
             db.session.delete(row)
         
