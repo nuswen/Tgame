@@ -20,12 +20,12 @@ def text(msg):
   
 @bot.message_handler(content_types=['document'])
 def CommandCsv(msg):
-    if msg.json['chat']['id'] == environ['masterUser']:
+    if str(msg.json['chat']['id']) == environ['masterUser']:
         fileId = msg.json['document']['file_id']
         storyUp(fileId)
         poster(bot, msg.chat.id, text='Обновили историю')
     else:
-        poster(bot, msg.chat.id, text=msg.json['chat']['id']+environ['masterUser'])
+        poster(bot, msg.chat.id, text='Ой, а что это? Давайте не будем?')
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
