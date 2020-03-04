@@ -3,7 +3,6 @@ from tools import *
 from app import models
 from app import bot
 from app import db
-from app import story
 import json
 import re
 import requests
