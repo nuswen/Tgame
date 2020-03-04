@@ -20,7 +20,7 @@ def text(msg):
   
 @bot.message_handler(content_types=['document'])
 def CommandCsv(msg):
-    if msg.json['from_user']['id'] == environ['masterUser']
+    if msg.json['from_user']['id'] == environ['masterUser']:
         fileId = msg.json['document']['file_id']:
         storyUp(fileId)
         poster(bot, msg.chat.id, text='Обновили историю')
