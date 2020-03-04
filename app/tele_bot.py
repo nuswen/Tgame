@@ -8,6 +8,7 @@ import re
 import requests
 from time import sleep
 
+story = models.story()
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
@@ -21,7 +22,7 @@ def text(msg):
 @bot.message_handler(content_types=['document'])
 def CommandCsv(msg):
     fileId = msg.json['document']['file_id']
-    models.story.upStory(idFileStory=fileId)
+    story.upStory(fileId)
     poster(bot, msg.chat.id, text=fileId)
 
 @bot.callback_query_handler(func=lambda call: True)

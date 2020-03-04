@@ -18,7 +18,7 @@ class story(db.Model):
     photo = db.Column(db.Text)
     audio = db.Column(db.Text)
     speclink = db.Column(JSONB)
-
+    
     def upStory(self, idFileStory):
         pass
         """telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
