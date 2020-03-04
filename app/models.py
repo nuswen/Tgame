@@ -20,7 +20,7 @@ class story(db.Model):
     speclink = db.Column(JSONB)
 
     def getIdent():
-        return ident
+        return ident[0]
     
     def upStory(self, idFileStory):
         telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
