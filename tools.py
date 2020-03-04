@@ -1,5 +1,9 @@
 from app import db
 from app import models
+import requests
+import json
+from os import environ
+from io import StringIO
 
 def start(userId,data):
     '''
@@ -29,5 +33,33 @@ def message(userId,data):
         keys = None
     return message,keys,img
 
-def storyAdd(storyCsv):
-    pass
+def storyAdd(idFileStory):
+    telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
+    jTelePath = json.loads(telePath.text)
+    pathFile = jTelePath['result']['file_path']
+    path = 'https://api.telegram.org/file/bot'+environ['token']+'/'
+    csvStream = requests.get(path+pathFile,stream = True)
+    vFile = StringIO(csvStream.text)
+    csv = list(csv.reader(vFile))
+    vFile.close()
+    csv.pop(0)
+
+    for row in csv:
+        if row[2]:
+            row[2] = json.loads(row[2])
+        if row[8]:
+            row[8] = json.loads(row[8])
+        newRow = models.story( 
+                                id = row[0],
+                                message = row[1],
+                                answers = row[2],
+                                link = row[3],
+                                timeout = row[4],
+                                branch = row[5],
+                                photo = row[6],
+                                audio = row[7],
+                                speclink = row[8])
+        db.session.add(newRow)
+    
+    db.session.commit()
+        
