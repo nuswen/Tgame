@@ -47,16 +47,7 @@ class story(db.Model):
                 speclink = json.loads(speclink)
 
             
-            newRow = self( 
-                                    ident = ident,
-                                    message = message,
-                                    answers = answers,
-                                    link = link,
-                                    timeout = timeout,
-                                    branch = branch,
-                                    photo = photo,
-                                    audio = audio,
-                                    speclink = speclink)
+            newRow = self(ident = ident,message = message,answers = answers,link = link,timeout = timeout,branch = branch,photo = photo,audio = audio,speclink = speclink)
             db.session.add(newRow)
         CurStory = self.query.all()
         for row in CurStory:
