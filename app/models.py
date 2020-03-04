@@ -56,7 +56,7 @@ class story(db.Model):
                                     branch = branch,
                                     photo = photo,
                                     audio = audio,
-                                    speclink = speclink
+                                    speclink = speclink)
             db.session.add(newRow)
         CurStory = self.query.all()
         for row in CurStory:
