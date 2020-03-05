@@ -18,7 +18,7 @@ def start(userId,data):
         return "continue"
     
     ts = timestamp()
-    branchTime = {environ['start_branch']:{"start":ts,"end":}}
+    branchTime = {environ['start_branch']:{"start":ts}}
     branchTime = json.dumps(branchTime)
     
     newUser = models.telegram_users(userId = userId, 
