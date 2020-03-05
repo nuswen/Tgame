@@ -17,7 +17,7 @@ def start(userId):
     if exUser:
         return "continue"
     
-    ts = datetime.timestamp(datetime.utcnow())
+    ts = int(datetime.timestamp(datetime.utcnow()))
     branchTime = {environ['start_branch']:{"start":ts}}
     branchTime = json.dumps(branchTime)
     
