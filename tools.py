@@ -17,8 +17,8 @@ def start(userId):
     if exUser:
         return "continue"
     
-    ts = datetime.utcnow()
-    branchTime = {environ['start_branch']:{"start":datetime.timestamp(ts)}}
+    ts = datetime.timestamp(datetime.utcnow())
+    branchTime = {environ['start_branch']:{"start":ts}}
     branchTime = json.dumps(branchTime)
     
     newUser = models.telegram_users(userId = userId, 
