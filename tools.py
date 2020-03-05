@@ -13,7 +13,7 @@ def start(userId):
     Пытается добавить нового юзера в базу - возвращает start если вышло, если юзверь 
     уже есть - continue
     '''
-    exUser = models.telegram_users.query.filter_by(Id = userId).first()
+    exUser = models.telegram_users.query.filter_by(userId = userId).first()
     if exUser:
         return "continue"
     
