@@ -17,7 +17,7 @@ class telegram_users(db.Model):
     userId = db.Column(db.Integer, primary_key=True)
     curBranch = db.Column(db.Text)
     point = db.Column(db.Integer)
-    lastTime = db.Column(db.TimeStamp)
+    lastTime = db.Column(db.DateTime(timezone=False))
     branchTime = db.Column(JSONB)
     refCount = db.Column(db.Integer)
     panron = db.Column(db.Boolean)
