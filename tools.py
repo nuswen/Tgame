@@ -5,7 +5,7 @@ import json
 import csv
 from os import environ
 from io import StringIO
-from datetime import timestamp
+from datetime import datetime
 
 
 def start(userId,data):
@@ -17,7 +17,7 @@ def start(userId,data):
     if exUser:
         return "continue"
     
-    ts = timestamp()
+    ts = datetime.timestamp(datetime.now())
     branchTime = {environ['start_branch']:{"start":ts}}
     branchTime = json.dumps(branchTime)
     
