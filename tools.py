@@ -27,7 +27,7 @@ def start(userId):
                                     lastTime = ts,
                                     branchTime = branchTime,
                                     refCount = 0,
-                                    panron = False)
+                                    patron = False)
     db.session.add(newUser)
     db.session.commit()
     return "start"

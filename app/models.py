@@ -20,5 +20,5 @@ class telegram_users(db.Model):
     lastTime = db.Column(db.DateTime(timezone=False))
     branchTime = db.Column(JSONB)
     refCount = db.Column(db.Integer)
-    panron = db.Column(db.Boolean)
+    patron = db.Column(db.Boolean)
     patronId = db.Column(db.Text)
