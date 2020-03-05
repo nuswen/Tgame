@@ -8,7 +8,7 @@ from io import StringIO
 from datetime import datetime
 
 
-def start(userId,data):
+def start(userId):
     '''
     Пытается добавить нового юзера в базу - возвращает start если вышло, если юзверь 
     уже есть - continue
