@@ -11,8 +11,8 @@ from os import environ
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
-    start(msg.chat.id)
-    text = 'ok'
+    
+    text = start(msg.chat.id)
     #text = models.story.query().order_by(models.story.ident)
     poster(bot, msg.chat.id, text=text)
 

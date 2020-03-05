@@ -30,7 +30,7 @@ def start(userId):
                                     panron = False)
     db.session.add(newUser)
     db.session.commit()
-    return
+    return "start"
 
 def message(userId,data):
     user = models.teleusers.query.filter_by(Id = userId).first()
