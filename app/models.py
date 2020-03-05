@@ -1,5 +1,6 @@
 from app import db
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 
 
 class story(db.Model):
@@ -17,7 +18,7 @@ class telegram_users(db.Model):
     userId = db.Column(db.Integer, primary_key=True)
     curBranch = db.Column(db.Text)
     point = db.Column(db.Integer)
-    lastTime = db.Column(db.DateTime.datetime.timestamp(timezone=False))
+    lastTime = db.Column(TIMESTAMP)
     branchTime = db.Column(JSONB)
     refCount = db.Column(db.Integer)
     patron = db.Column(db.Boolean)
