@@ -1,4 +1,4 @@
-from app import app
+#from app import app
 #app.run()
 
 from threading import Thread
@@ -11,7 +11,8 @@ class MyThread(Thread):
         self.name = name
     
     def run(self):
-        app.run()
+        print('Hey')
+        #app.run()
     
 def create_threads():
     my_thread = MyThread('bot')
