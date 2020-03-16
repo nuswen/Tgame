@@ -100,6 +100,6 @@ def storyUp(idFileStory):
 
 def storyGo(userId,answer = ''):
     user = models.telegram_users.query.filter_by(userId = userId).first()
-    storyRow = models.telegram_users.query.filter_by(ident = user.point).first()
+    storyRow = models.telegram_users.query.filter_by(ident = user["point"]).first()
     if answer == '':
         return storyRow
