@@ -19,7 +19,9 @@ def hi_msg(msg):
 
 @bot.message_handler(content_types=['text'])
 def text(msg):
-    pass
+    storyRow = storyGo(msg.chat.id,answer=msg.text)
+    poster(bot, msg.chat.id, text=storyRow.message,buttons=storyRow.answers)
+
   
 @bot.message_handler(content_types=['document'])
 def CommandCsv(msg):
