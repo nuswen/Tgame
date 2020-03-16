@@ -3,33 +3,7 @@ from app import models
 from app import db
 
 
-def poster(bot, chatId, text=None, addTag=None, remTag=None, buttons=None, 
-ed=False, message_id=None, doc=None, img=None):
-    if addTag or remTag:
-        usr = models.teleusers.query.filter_by(Id = chatId).first()
-        if not usr.Tags:
-            tags = []
-        else:
-            tags = usr.Tags
-
-        if not addTag:
-            addTag = []
-
-        if not remTag:
-            remTag = []
-        
-        if addTag:
-            for i in addTag:
-                if i not in tags:
-                    tags.append(i)
-        elif remTag:
-            for i in tags:
-                if i in remTag:
-                    tags.remove(i)
-        usr.Tags = tags
-        db.session.add(usr)
-        db.session.commit()
-    
+def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=None, img=None):
     if buttons:
         if ed and not img and not doc:
             bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, reply_markup=keyboarder(buttons))
