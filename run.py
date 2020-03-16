@@ -11,8 +11,8 @@ class MyThread(Thread):
         self.name = name
     
     def run(self):
-        print('Hey')
-        #app.run()
+        from app import app
+        app.run()
     
 def create_threads():
     my_thread = MyThread('bot')
