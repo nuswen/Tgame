@@ -12,9 +12,10 @@ from os import environ
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
     
-    text = start(msg.chat.id)
+    start(msg.chat.id)
+    storyRow = storyGo(msg.chat.id)
     #text = models.story.query().order_by(models.story.ident)
-    poster(bot, msg.chat.id, text=text)
+    poster(bot, msg.chat.id, text=storyRow.message)
 
 @bot.message_handler(content_types=['text'])
 def text(msg):

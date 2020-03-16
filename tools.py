@@ -46,7 +46,7 @@ def message(userId,data):
         keys = None
     return message,keys,img
 
-def tryInt(string):
+def _tryInt(string):
     try:
         num = int(string)
     except:
@@ -72,14 +72,14 @@ def storyUp(idFileStory):
 
             ident,message,answers,link,timeout,branch,photo,audio,speclink = row
 
-            ident = tryInt(ident)
+            ident = _tryInt(ident)
             print(ident)
 
             if answers and not answers.isspace():
                 answers = json.loads(answers)
 
-            link = tryInt(link)
-            timeout = tryInt(timeout)
+            link = _tryInt(link)
+            timeout = _tryInt(timeout)
 
             if speclink and not speclink.isspace():
                 speclink = json.loads(speclink)
@@ -97,3 +97,9 @@ def storyUp(idFileStory):
             db.session.add(newRow)
         
         db.session.commit()
+
+def storyGo(userId,answer = ''):
+    user = models.telegram_users.query.filter_by(userId = userId).first()
+    storyRow = models.telegram_users.query.filter_by(ident = user.point).first()
+    if answer == '':
+        return storyRow
