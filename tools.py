@@ -104,19 +104,22 @@ def storyGo(userId,answer = ''):
     if answer == '':
         return storyRow
     else:
-        newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
-        ts = int(datetime.timestamp(datetime.utcnow()))
-        user.point = newStoryRow.ident
-        user.lastTime = ts
-        if user.curBranch != newStoryRow.branch:
-            newBranchTime = user.branchTime
-            newBranchTime.update({user.curBranch:ts})
-            newBranchTime = json.dumps(newBranchTime)
-            user.branchTime = newBranchTime
-        user.curBranch = newStoryRow.branch
-        db.session.add(user)
-        db.session.commit()
+        try:
+            newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
+            ts = int(datetime.timestamp(datetime.utcnow()))
+            user.point = newStoryRow.ident
+            user.lastTime = ts
+            if user.curBranch != newStoryRow.branch:
+                newBranchTime = user.branchTime
+                newBranchTime.update({user.curBranch:ts})
+                newBranchTime = json.dumps(newBranchTime)
+                user.branchTime = newBranchTime
+            user.curBranch = newStoryRow.branch
+            db.session.add(user)
+            db.session.commit()
 
-        return newStoryRow
+            return newStoryRow
+        except:
+            return storyRow
 
 
