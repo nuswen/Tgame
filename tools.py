@@ -114,7 +114,7 @@ def storyGo(userId,answer = ''):
             newBranchTime = json.dumps(newBranchTime)
             user.branchTime = newBranchTime
         user.curBranch = newStoryRow.branch
-        db.session.add(newUser)
+        db.session.add(user)
         db.session.commit()
 
         return newStoryRow
