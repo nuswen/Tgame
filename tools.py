@@ -61,7 +61,6 @@ def storyUp(idFileStory):
     '''
     Получает fileId загруженного файла, скачивает его, пытается разобрать его как CSV и добавляет к истории
     '''
-    print(idFileStory)
     telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
     jTelePath = json.loads(telePath.text)
     pathFile = jTelePath['result']['file_path']
@@ -75,7 +74,7 @@ def storyUp(idFileStory):
 
         for row in csvFile:
 
-            ident,message,answers,link,timeout,branch,photo,audio,speclink = row
+            ident,message,answers,link,timeout,branch,photo,audio,speclink,doc = row
 
             ident = _tryInt(ident)
             print(ident)
@@ -98,7 +97,8 @@ def storyUp(idFileStory):
                                     branch = branch,
                                     photo = photo,
                                     audio = audio,
-                                    speclink = speclink)
+                                    speclink = speclink
+                                    doc = doc)
             db.session.add(newRow)
         
         db.session.commit()
