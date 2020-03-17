@@ -141,12 +141,15 @@ def storyGo(userId,answer = None, link=None):
 def checkTask():
     tasks = models.waiting.query.all()
     for task in tasks:
-        time.sleep(120)
         ts = int(datetime.timestamp(datetime.utcnow()))
         if task.time>=ts:
             if task.link:
                 poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
+                db.session.delete(task)
+                db.session.commit() 
                 storyGo(task.userId,link=task.link)
             else:
                 poster(bot,task.userId,text=task.message,doc=task.doc,img=task.image)
+                db.session.delete(task)
+                db.session.commit() 
 
