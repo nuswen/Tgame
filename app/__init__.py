@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 import telebot
 import threading
 import time
-from tele_bot_tools import *
 
 bot = telebot.TeleBot(environ['token'])
 
