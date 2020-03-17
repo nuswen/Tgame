@@ -24,7 +24,7 @@ def text(msg):
     storyGo(msg.chat.id,answer=msg.text)
 
   
-@bot.message_handler(content_types=['image'])
+@bot.message_handler(content_types=['photo'])
 def img(msg):
     if str(msg.json['chat']['id']) == environ['masterUser']:
         poster(bot,msg.chat.id,text=msg.text)
