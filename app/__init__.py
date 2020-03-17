@@ -16,9 +16,9 @@ from app import tele_bot, models
 @app.before_first_request
 def activate_job():
     def run_job():
-        import tele_bot_tools
+        import tools
         while True:
-            checkTask()
+            tools.checkTask()
 
     thread = threading.Thread(target=run_job)
     thread.start()
