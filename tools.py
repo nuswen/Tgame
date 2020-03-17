@@ -140,6 +140,7 @@ def storyGo(userId,answer = None, link=None):
 def checkTask():
     tasks = models.waiting.all()
     for task in tasks:
+        print(task)
         ts = int(datetime.timestamp(datetime.utcnow()))
         if task.time>=ts:
             if task.link:
