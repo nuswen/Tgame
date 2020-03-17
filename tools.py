@@ -145,6 +145,8 @@ def checkTask():
     for task in tasks:
         ts = int(datetime.timestamp(datetime.utcnow()))
         if task.time>=ts:
+            print(task.time)
+            print(ts)
             if task.link:
                 poster(bot,task.userId,text=task.message,doc=task.doc,img=task.image)
                 db.session.delete(task)
