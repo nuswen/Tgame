@@ -1,11 +1,13 @@
 from app import db
 from app import models
+from app import bot
 import requests
 import json
 import csv
 from os import environ
 from io import StringIO
 from datetime import datetime
+from tele_bot_tools import *
 
 
 def start(userId):
@@ -28,6 +30,7 @@ def start(userId):
                                     branchTime = branchTime,
                                     refCount = 0,
                                     patron = False)
+    
     db.session.add(newUser)
     db.session.commit()
     return "start"
@@ -98,28 +101,50 @@ def storyUp(idFileStory):
         
         db.session.commit()
 
-def storyGo(userId,answer = ''):
+def storyGo(userId,answer = None, link=None):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     storyRow = models.story.query.filter_by(ident = user.point).first()
-    if answer == '':
-        return storyRow
-    else:
-        try:
+    try:
+        if answer:
             newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
-            ts = int(datetime.timestamp(datetime.utcnow()))
-            user.point = newStoryRow.ident
-            user.lastTime = ts
-            if user.curBranch != newStoryRow.branch:
-                newBranchTime = user.branchTime
-                newBranchTime.update({user.curBranch:ts})
-                newBranchTime = json.dumps(newBranchTime)
-                user.branchTime = newBranchTime
-            user.curBranch = newStoryRow.branch
-            db.session.add(user)
-            db.session.commit()
+        elif link:
+            newStoryRow = models.story.query.filter_by(ident = link).first()
+        else:
+            newStoryRow = storyRow
+        ts = int(datetime.timestamp(datetime.utcnow()))
+        user.point = newStoryRow.ident
+        user.lastTime = ts
+        if user.curBranch != newStoryRow.branch:
+            newBranchTime = user.branchTime
+            newBranchTime.update({user.curBranch:ts})
+            newBranchTime = json.dumps(newBranchTime)
+            user.branchTime = newBranchTime
+        user.curBranch = newStoryRow.branch
 
-            return newStoryRow
-        except:
-            return storyRow
+        newTask = models.waiting(userId = userId, 
+                                message = newStoryRow.message,
+                                answers = newStoryRow.answers,
+                                doc = newStoryRow.doc,
+                                image = newStoryRow.photo,
+                                audio = newStoryRow.audio,
+                                time = ts+newStoryRow.timeout*1000,
+                                link = newStoryRow.link)
 
+        db.session.add(user)
+        db.session.add(newTask)
+        db.session.commit()   
+        return newStoryRow     
+    except:
+        return storyRow
+
+def checkTask():
+    tasks = models.waiting.all()
+    for task in tasks:
+        ts = int(datetime.timestamp(datetime.utcnow()))
+        if task.time>=ts:
+            if task.link:
+                poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
+                storyGo(task.userId,link=task.link)
+            else:
+                poster(bot,task.userId,text=task.message,doc=task.doc,img=task.image)
 

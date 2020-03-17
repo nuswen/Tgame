@@ -13,16 +13,13 @@ from os import environ
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
-    
     start(msg.chat.id)
-    storyRow = storyGo(msg.chat.id)
-    #text = models.story.query().order_by(models.story.ident)
-    poster(bot, msg.chat.id, text=storyRow.message,buttons=storyRow.answers)
+    storyGo(msg.chat.id)
+
 
 @bot.message_handler(content_types=['text'])
 def text(msg):
-    storyRow = storyGo(msg.chat.id,answer=msg.text)
-    poster(bot, msg.chat.id, text=storyRow.message,buttons=storyRow.answers)
+    storyGo(msg.chat.id,answer=msg.text)
 
   
 @bot.message_handler(content_types=['document'])

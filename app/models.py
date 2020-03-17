@@ -12,6 +12,8 @@ class story(db.Model):
     photo = db.Column(db.Text)
     audio = db.Column(db.Text)
     speclink = db.Column(JSONB)
+    doc = db.Column(db.Text)
+
 
 class telegram_users(db.Model):
     userId = db.Column(db.Integer, primary_key=True)
@@ -22,3 +24,13 @@ class telegram_users(db.Model):
     refCount = db.Column(db.Integer)
     patron = db.Column(db.Boolean)
     patronId = db.Column(db.Text)
+
+class waiting(db.Model):
+    userId = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.Text)
+    answers = db.Column(JSONB)
+    doc = db.Column(db.Text)
+    image = db.Column(db.Text)
+    audio = db.Column(db.Text)
+    time = db.Column(db.Integer)
+    link = db.Column(db.Integer)
