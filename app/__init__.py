@@ -2,6 +2,8 @@ from os import environ
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 import telebot
+import threading
+import time
 from tele_bot_tools import *
 
 bot = telebot.TeleBot(environ['token'])
@@ -12,12 +14,20 @@ db = SQLAlchemy(app)
 
 from app import tele_bot, models
 
-
 @app.route("/"+environ['token'], methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
 
+@app.before_first_request
+def activate_job():
+    def run_job():
+        while True:
+            poster(bot, 2601798, text='hi')
+            time.sleep(3)
+
+    thread = threading.Thread(target=run_job)
+    thread.start()
 
 bot.remove_webhook()
 bot.set_webhook(url=environ['app_url']+environ['token'])
