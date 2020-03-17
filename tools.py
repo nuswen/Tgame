@@ -121,13 +121,17 @@ def storyGo(userId,answer = None, link=None):
         newBranchTime = json.dumps(newBranchTime)
         user.branchTime = newBranchTime
     user.curBranch = newStoryRow.branch
+    if newStoryRow.timeout:
+        timeout = ts+newStoryRow.timeout*1000
+    else:
+        timeout = None
     newTask = models.waiting(userId = userId, 
                             message = newStoryRow.message,
                             answers = newStoryRow.answers,
                             doc = newStoryRow.doc,
                             image = newStoryRow.photo,
                             audio = newStoryRow.audio,
-                            time = ts+newStoryRow.timeout*1000,
+                            time = timeout,
                             link = newStoryRow.link)
     db.session.add(user)
     db.session.add(newTask)
