@@ -124,7 +124,7 @@ def storyGo(userId,answer = None, link=None):
     if newStoryRow.timeout:
         timeout = ts+newStoryRow.timeout*1000
     else:
-        timeout = ts+ int(environ['std_timeout'])
+        timeout = ts + int(environ['std_timeout'])
     newTask = models.waiting(userId = userId, 
                             message = newStoryRow.message,
                             answers = newStoryRow.answers,
@@ -146,12 +146,12 @@ def checkTask():
         ts = int(datetime.timestamp(datetime.utcnow()))
         if task.time>=ts:
             if task.link:
-                poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
+                poster(bot,task.userId,text=task.message,doc=task.doc,img=task.image)
                 db.session.delete(task)
                 db.session.commit() 
                 storyGo(task.userId,link=task.link)
             else:
-                poster(bot,task.userId,text=task.message,doc=task.doc,img=task.image)
+                poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
                 db.session.delete(task)
                 db.session.commit() 
 
