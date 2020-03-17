@@ -114,6 +114,16 @@ def storyGo(userId,answer = None, link=None):
             newStoryRow = models.story.query.filter_by(ident = link).first()
         else:
             newStoryRow = storyRow
+        
+        if newStoryRow.photo:
+            bot.send_chat_action(userId,"upload_photo")
+        elif newStoryRow.audio:
+            bot.send_chat_action(userId,"record_audio")
+        elif newStoryRow.doc:
+            bot.send_chat_action(userId,"upload_document")
+        elif newStoryRow.message:
+            bot.send_chat_action(userId,"typing")
+
         ts = int(datetime.timestamp(datetime.utcnow()))
         user.point = newStoryRow.ident
         user.lastTime = ts
@@ -156,4 +166,3 @@ def checkTask():
                 poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
                 db.session.delete(task)
                 db.session.commit() 
-

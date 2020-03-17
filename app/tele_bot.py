@@ -20,7 +20,6 @@ def hi_msg(msg):
 
 @bot.message_handler(content_types=['text'])
 def text(msg):
-    bot.send_chat_action(msg.chat.id,"typing")
     storyGo(msg.chat.id,answer=msg.text)
 
   
