@@ -97,7 +97,7 @@ def storyUp(idFileStory):
                                     branch = branch,
                                     photo = photo,
                                     audio = audio,
-                                    speclink = speclink
+                                    speclink = speclink,
                                     doc = doc)
             db.session.add(newRow)
         
