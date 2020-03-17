@@ -2,6 +2,8 @@ from os import environ
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 import telebot
+import threading
+import time
 
 bot = telebot.TeleBot(environ['token'])
 
@@ -11,8 +13,15 @@ db = SQLAlchemy(app)
 
 from app import tele_bot, models
 
+@app.before_first_request
+def activate_job():
+    def run_job():
+        while True:
+            print("Run recurring task")
+            time.sleep(3)
 
-
+    thread = threading.Thread(target=run_job)
+    thread.start()
 
 @app.route("/"+environ['token'], methods=['POST'])
 def getMessage():
