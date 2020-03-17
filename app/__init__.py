@@ -13,12 +13,7 @@ db = SQLAlchemy(app)
 
 from app import tele_bot, models
 
-@app.route("/"+environ['token'], methods=['POST'])
-def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
-
-"""@app.before_first_request
+@app.before_first_request
 def activate_job():
     def run_job():
         while True:
@@ -26,7 +21,12 @@ def activate_job():
             time.sleep(3)
 
     thread = threading.Thread(target=run_job)
-    thread.start()"""
+    thread.start()
+
+@app.route("/"+environ['token'], methods=['POST'])
+def getMessage():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
 
 bot.remove_webhook()
 bot.set_webhook(url=environ['app_url']+environ['token'])
