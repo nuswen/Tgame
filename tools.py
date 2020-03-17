@@ -141,7 +141,6 @@ def storyGo(userId,answer = None, link=None):
 def checkTask():
     tasks = models.waiting.all()
     for task in tasks:
-        poster(bot,2601798,text=task.message)
         time.sleep(120)
         ts = int(datetime.timestamp(datetime.utcnow()))
         if task.time>=ts:
