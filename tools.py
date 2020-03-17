@@ -122,9 +122,9 @@ def storyGo(userId,answer = None, link=None):
         user.branchTime = newBranchTime
     user.curBranch = newStoryRow.branch
     if newStoryRow.timeout:
-        timeout = ts+newStoryRow.timeout*1000
+        timeout = ts+newStoryRow.timeout
     else:
-        timeout = ts + int(environ['std_timeout'])*1000
+        timeout = ts + int(environ['std_timeout'])
     newTask = models.waiting(userId = userId, 
                             message = newStoryRow.message,
                             answers = newStoryRow.answers,
@@ -144,7 +144,7 @@ def checkTask():
     tasks = models.waiting.query.all()
     ts = int(datetime.timestamp(datetime.utcnow()))
     for task in tasks:
-        if task.time>=ts:
+        if task.time<=ts:
             print(task.time)
             print(ts)
             if task.link:
