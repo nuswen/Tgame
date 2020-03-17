@@ -61,6 +61,7 @@ def storyUp(idFileStory):
     '''
     Получает fileId загруженного файла, скачивает его, пытается разобрать его как CSV и добавляет к истории
     '''
+    print(idFileStory)
     telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
     jTelePath = json.loads(telePath.text)
     pathFile = jTelePath['result']['file_path']
