@@ -64,6 +64,7 @@ def storyUp(idFileStory):
     telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
     jTelePath = json.loads(telePath.text)
     pathFile = jTelePath['result']['file_path']
+    print (pathFile)
     if pathFile[:-4] == '.csv':
         path = 'https://api.telegram.org/file/bot'+environ['token']+'/'
         csvStream = requests.get(path+pathFile,stream = True)
@@ -73,7 +74,6 @@ def storyUp(idFileStory):
         csvFile.pop(0)
 
         for row in csvFile:
-            print(row)
 
             ident,message,answers,link,timeout,branch,photo,audio,speclink,doc = row
 
