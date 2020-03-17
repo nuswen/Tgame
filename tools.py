@@ -65,13 +65,13 @@ def storyUp(idFileStory):
     jTelePath = json.loads(telePath.text)
     pathFile = jTelePath['result']['file_path']
     if pathFile[:-4] == '.csv':
+        print("csvv")
         path = 'https://api.telegram.org/file/bot'+environ['token']+'/'
         csvStream = requests.get(path+pathFile,stream = True)
         vFile = StringIO(csvStream.text)
         csvFile = list(csv.reader(vFile))
         vFile.close()
         csvFile.pop(0)
-        print (csvFile)
 
         for row in csvFile:
 
