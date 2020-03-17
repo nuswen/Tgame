@@ -139,7 +139,7 @@ def storyGo(userId,answer = None, link=None):
         return storyRow
 
 def checkTask():
-    tasks = models.waiting.all()
+    tasks = models.waiting.query.all()
     for task in tasks:
         time.sleep(120)
         ts = int(datetime.timestamp(datetime.utcnow()))
