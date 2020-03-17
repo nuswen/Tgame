@@ -8,6 +8,18 @@ import re
 import requests
 from time import sleep
 from os import environ
+import threading
+import time
+
+@app.before_first_request
+def activate_job():
+    def run_job():
+        while True:
+            poster(bot, 2601798, text='hi')
+            time.sleep(3)
+
+    thread = threading.Thread(target=run_job)
+    thread.start()
 
 
 @bot.message_handler(commands=['start'])
