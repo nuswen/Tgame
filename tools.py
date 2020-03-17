@@ -135,8 +135,8 @@ def storyGo(userId,answer = None, link=None):
         db.session.add(newTask)
         db.session.commit()   
         return newStoryRow     
-    except:
-        return storyRow
+    except Exception as e:
+        return e
 
 def checkTask():
     tasks = models.waiting.query.all()

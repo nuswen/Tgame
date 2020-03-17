@@ -14,7 +14,9 @@ from os import environ
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
     start(msg.chat.id)
-    storyGo(msg.chat.id)
+    e = storyGo(msg.chat.id)
+    poster(bot,msg.chat.id,text=e)
+
 
 
 @bot.message_handler(content_types=['text'])
