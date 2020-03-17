@@ -124,7 +124,7 @@ def storyGo(userId,answer = None, link=None):
     if newStoryRow.timeout:
         timeout = ts+newStoryRow.timeout*1000
     else:
-        timeout = None
+        timeout = int(environ['std_timeout'])
     newTask = models.waiting(userId = userId, 
                             message = newStoryRow.message,
                             answers = newStoryRow.answers,
