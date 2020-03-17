@@ -18,7 +18,7 @@ def activate_job():
     def run_job():
         import tele_bot_tools
         while True:
-            tele_bot_tools.poster(bot, 2601798, text='hi')
+            #tele_bot_tools.poster(bot, 2601798, text='hi')
             time.sleep(3)
 
     thread = threading.Thread(target=run_job)
