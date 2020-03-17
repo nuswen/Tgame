@@ -27,7 +27,7 @@ def text(msg):
 @bot.message_handler(content_types=['photo'])
 def img(msg):
     if str(msg.json['chat']['id']) == environ['masterUser']:
-        poster(bot,msg.chat.id,text=msg.text)
+        poster(bot,msg.chat.id,text=msg)
 
 
 @bot.message_handler(content_types=['document'])
