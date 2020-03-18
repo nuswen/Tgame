@@ -154,7 +154,7 @@ def storyGo(userId,answer = None, link=None):
 
 def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
-    tasks = models.waiting.query.filter_by(time >= ts).all()
+    tasks = models.waiting.query.filter_by(models.waiting.time <= ts).all()
     for task in tasks:
         if task.link:
             poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
