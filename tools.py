@@ -73,6 +73,7 @@ def storyUp(idFileStory):
         vFile.close()
         story = models.story.query.all()
         db.session.delete(story)
+        db.session.commit()
 
         for row in csvFile:
 
