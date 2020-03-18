@@ -71,6 +71,8 @@ def storyUp(idFileStory):
         vFile = StringIO(csvStream.text)
         csvFile = list(csv.reader(vFile))
         vFile.close()
+        story = models.story.query.all()
+        db.session.delete(story)
 
         for row in csvFile:
 
