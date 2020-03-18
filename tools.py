@@ -114,15 +114,6 @@ def storyGo(userId,answer = None, link=None):
             newStoryRow = models.story.query.filter_by(ident = link).first()
         else:
             newStoryRow = storyRow
-        
-        if newStoryRow.photo:
-            bot.send_chat_action(userId,"upload_photo")
-        elif newStoryRow.audio:
-            bot.send_chat_action(userId,"record_audio")
-        elif newStoryRow.doc:
-            bot.send_chat_action(userId,"upload_document")
-        elif newStoryRow.message:
-            bot.send_chat_action(userId,"typing")
 
         ts = int(datetime.timestamp(datetime.utcnow()))
         user.point = newStoryRow.ident
@@ -137,6 +128,7 @@ def storyGo(userId,answer = None, link=None):
             timeout = ts+newStoryRow.timeout
         else:
             timeout = ts + int(environ['std_timeout'])
+        
         newTask = models.waiting(userId = userId, 
                                 message = newStoryRow.message,
                                 answers = newStoryRow.answers,
@@ -153,16 +145,26 @@ def storyGo(userId,answer = None, link=None):
         return e
 
 def checkTask():
-    ts = int(datetime.timestamp(datetime.utcnow()))
-    tasks = models.waiting.query.filter_by(models.waiting.time <= ts).all()
+    tasks = models.waiting.query.all()
     for task in tasks:
-        if task.link:
-            poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
-            db.session.delete(task)
-            db.session.commit() 
-            storyGo(task.userId,link=task.link)
-        else:
-            poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
-            db.session.delete(task)
-            db.session.commit() 
+        if task.time<=ts:
+            if task.link:
+                poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
+                db.session.delete(task)
+                db.session.commit() 
+                storyGo(task.userId,link=task.link)
+            else:
+                poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
+                db.session.delete(task)
+                db.session.commit()
+                continue
+        elif (ts - task.time)<15:
+            if task.image:
+                bot.send_chat_action(task.userId,"upload_photo")
+            elif task.audio:
+                bot.send_chat_action(task.userId,"record_audio")
+            elif task.doc:
+                bot.send_chat_action(task.userId,"upload_document")
+            elif task.message:
+                bot.send_chat_action(task.userId,"typing")
     time.sleep(1)
