@@ -71,7 +71,7 @@ def storyUp(idFileStory):
         vFile = StringIO(csvStream.text)
         csvFile = list(csv.reader(vFile))
         vFile.close()
-        story = models.story.query.delete()
+        models.story.query.delete()
 
         for row in csvFile:
 
@@ -141,7 +141,7 @@ def storyGo(userId,answer = None, link=None):
         db.session.commit()   
         return newStoryRow     
     except Exception as e:
-        return e
+        print(e)
 
 def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
