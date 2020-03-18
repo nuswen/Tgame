@@ -145,6 +145,7 @@ def storyGo(userId,answer = None, link=None):
         return e
 
 def checkTask():
+    ts = int(datetime.timestamp(datetime.utcnow()))
     tasks = models.waiting.query.all()
     for task in tasks:
         if task.time<=ts:
