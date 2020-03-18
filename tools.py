@@ -115,7 +115,7 @@ def storyGo(userId,answer = None, link=None):
         else:
             newStoryRow = storyRow
         
-        if nor newStoryRow:
+        if not newStoryRow:
             return '5'
 
         ts = int(datetime.timestamp(datetime.utcnow()))
