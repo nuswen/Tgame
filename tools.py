@@ -115,18 +115,22 @@ def storyGo(userId,answer = None, link=None):
         else:
             newStoryRow = storyRow
         
+        #TODO ловить ответы не по сценарию и отправлять ответ из списка
         if not newStoryRow:
             return '5'
 
         ts = int(datetime.timestamp(datetime.utcnow()))
         user.point = newStoryRow.ident
         user.lastTime = ts
+        betweenBranch = False
         if user.curBranch != newStoryRow.branch:
             newBranchTime = json.loads(user.branchTime)
             newBranchTime[user.curBranch].update({'end':ts})
             newBranchTime.update({newStoryRow.branch:{"start":ts}})
             newBranchTime = json.dumps(newBranchTime)
             user.branchTime = newBranchTime
+            betweenBranch = True
+
         user.curBranch = newStoryRow.branch
         if newStoryRow.timeout:
             timeout = ts+newStoryRow.timeout
@@ -140,7 +144,8 @@ def storyGo(userId,answer = None, link=None):
                                 image = newStoryRow.photo,
                                 audio = newStoryRow.audio,
                                 time = timeout,
-                                link = newStoryRow.link)
+                                link = newStoryRow.link,
+                                betweenBranch = betweenBranch)
         db.session.add(newTask)
         db.session.commit()   
         return newStoryRow     

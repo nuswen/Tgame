@@ -34,3 +34,4 @@ class waiting(db.Model):
     audio = db.Column(db.Text)
     time = db.Column(db.Integer)
     link = db.Column(db.Integer)
+    betweenBranch = db.Column(db.Boolean)
