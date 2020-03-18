@@ -137,7 +137,7 @@ def storyGo(userId,answer = None, link=None):
                                 audio = newStoryRow.audio,
                                 time = timeout,
                                 link = newStoryRow.link)
-        db.session.add(user)
+        #db.session.add(user)
         db.session.add(newTask)
         db.session.commit()   
         return newStoryRow     
