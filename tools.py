@@ -159,7 +159,7 @@ def checkTask():
                 db.session.delete(task)
                 db.session.commit()
                 continue
-        elif (ts - task.time)<15:
+        elif (task.time-ts)<15:
             if task.image:
                 bot.send_chat_action(task.userId,"upload_photo")
             elif task.audio:
