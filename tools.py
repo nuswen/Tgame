@@ -121,6 +121,7 @@ def storyGo(userId,answer = None, link=None):
         if user.curBranch != newStoryRow.branch:
             newBranchTime = json.loads(user.branchTime)
             newBranchTime[user.curBranch].update({'end':ts})
+            newBranchTime.update(newStoryRow.branch:{"start":ts})
             newBranchTime = json.dumps(newBranchTime)
             user.branchTime = newBranchTime
         user.curBranch = newStoryRow.branch
