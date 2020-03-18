@@ -107,8 +107,6 @@ def storyUp(idFileStory):
 def storyGo(userId,answer = None, link=None):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     storyRow = models.story.query.filter_by(ident = user.point).first()
-    if not storyRow:
-        return "5"
     try:
         if answer:
             newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
@@ -116,6 +114,9 @@ def storyGo(userId,answer = None, link=None):
             newStoryRow = models.story.query.filter_by(ident = link).first()
         else:
             newStoryRow = storyRow
+        
+        if nor newStoryRow:
+            return '5'
 
         ts = int(datetime.timestamp(datetime.utcnow()))
         user.point = newStoryRow.ident
