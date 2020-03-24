@@ -17,6 +17,7 @@ def start(userId):
     уже есть - continue
     '''
     exUser = models.telegram_users.query.filter_by(userId = userId).first()
+    print(exUser)
     if exUser:
         return "continue"
     
