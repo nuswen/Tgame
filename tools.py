@@ -105,50 +105,50 @@ def storyUp(idFileStory):
         db.session.commit()
 
 def storyGo(userId,answer = None, link=None):
-    user = models.telegram_users.query.filter_by(userId = userId).first()
-    storyRow = models.story.query.filter_by(ident = user.point).first()
-    #try:
-    if answer:
-        newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
-    elif link:
-        newStoryRow = models.story.query.filter_by(ident = link).first()
-    else:
-        newStoryRow = storyRow
-    
-    #TODO ловить ответы не по сценарию и отправлять ответ из списка
-    if not newStoryRow:
-        return '5'
-    ts = int(datetime.timestamp(datetime.utcnow()))
-    user.point = newStoryRow.ident
-    user.lastTime = ts
-    betweenBranch = False
-    if user.curBranch != newStoryRow.branch:
-        newBranchTime = json.loads(user.branchTime)
-        newBranchTime[user.curBranch].update({'end':ts})
-        newBranchTime.update({newStoryRow.branch:{"start":ts}})
-        newBranchTime = json.dumps(newBranchTime)
-        user.branchTime = newBranchTime
-        betweenBranch = True
-    user.curBranch = newStoryRow.branch
-    if newStoryRow.timeout:
-        timeout = ts+newStoryRow.timeout
-    else:
-        timeout = ts + int(environ['std_timeout'])
-    
-    newTask = models.waiting(userId = userId, 
-                            message = newStoryRow.message,
-                            answers = newStoryRow.answers,
-                            doc = newStoryRow.doc,
-                            image = newStoryRow.photo,
-                            audio = newStoryRow.audio,
-                            time = timeout,
-                            link = newStoryRow.link,
-                            betweenBranch = betweenBranch)
-    db.session.add(newTask)
-    db.session.commit()   
-    return newStoryRow     
-    #except Exception as e:
-        #print(e)
+        user = models.telegram_users.query.filter_by(userId = userId).first()
+        storyRow = models.story.query.filter_by(ident = user.point).first()
+        try:
+        if answer:
+            newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
+        elif link:
+            newStoryRow = models.story.query.filter_by(ident = link).first()
+        else:
+            newStoryRow = storyRow
+        
+        #TODO ловить ответы не по сценарию и отправлять ответ из списка
+        if not newStoryRow:
+            return '5'
+        ts = int(datetime.timestamp(datetime.utcnow()))
+        user.point = newStoryRow.ident
+        user.lastTime = ts
+        betweenBranch = False
+        if user.curBranch != newStoryRow.branch:
+            newBranchTime = json.loads(user.branchTime)
+            newBranchTime[user.curBranch].update({'end':ts})
+            newBranchTime.update({newStoryRow.branch:{"start":ts}})
+            newBranchTime = json.dumps(newBranchTime)
+            user.branchTime = newBranchTime
+            betweenBranch = True
+        user.curBranch = newStoryRow.branch
+        if newStoryRow.timeout:
+            timeout = ts+newStoryRow.timeout
+        else:
+            timeout = ts + int(environ['std_timeout'])
+        
+        newTask = models.waiting(userId = userId, 
+                                message = newStoryRow.message,
+                                answers = newStoryRow.answers,
+                                doc = newStoryRow.doc,
+                                image = newStoryRow.photo,
+                                audio = newStoryRow.audio,
+                                time = timeout,
+                                link = newStoryRow.link,
+                                betweenBranch = betweenBranch)
+        db.session.add(newTask)
+        db.session.commit()   
+        return newStoryRow     
+    except Exception as e:
+        print(e)
 
 def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
