@@ -133,8 +133,7 @@ def storyGo(userId,answer = None, link=None):
             user.branchTime = newBranchTime
             betweenBranch = True
         if newStoryRow.speclink:
-            speclink = json.loads(newStoryRow.speclink)
-            for i in speclink:
+            for i in newStoryRow.speclink:
                 if i == "tag":
                     if storyRow.speclink[i] == "affront":
                         affront = True
