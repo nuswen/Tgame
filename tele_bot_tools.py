@@ -34,6 +34,10 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
 
 def keyboarder(keys):
     keyboard = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+    temp = []
     for i in keys:
+        temp.append(i)
+    temp.reverse()
+    for i in temp:
         keyboard.add(i)
     return keyboard

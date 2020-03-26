@@ -135,7 +135,7 @@ def storyGo(userId,answer = None, link=None):
         if newStoryRow.speclink:
             for i in newStoryRow.speclink:
                 print(i)
-                print(storyRow.speclink[i])
+                print(type(storyRow.speclink))
                 if i == "tag":
                     if storyRow.speclink[i] == "affront":
                         affront = True
