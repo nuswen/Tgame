@@ -108,6 +108,7 @@ def storyUp(idFileStory):
 def storyGo(userId,answer = None, link=None):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     storyRow = models.story.query.filter_by(ident = user.point).first()
+                    
     try:
         if answer:
             newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
@@ -123,6 +124,7 @@ def storyGo(userId,answer = None, link=None):
         user.point = newStoryRow.ident
         user.lastTime = ts
         betweenBranch = False
+        affront = False
         if user.curBranch != newStoryRow.branch:
             newBranchTime = json.loads(user.branchTime)
             newBranchTime[user.curBranch].update({'end':ts})
@@ -130,6 +132,12 @@ def storyGo(userId,answer = None, link=None):
             newBranchTime = json.dumps(newBranchTime)
             user.branchTime = newBranchTime
             betweenBranch = True
+        if newStoryRow.speclink:
+            speclink = json.loads(newStoryRow.speclink)
+            for i in speclink:
+                if i == "tag":
+                    if storyRow.speclink[i] == "affront":
+                        affront = True
         user.curBranch = newStoryRow.branch
         if newStoryRow.timeout:
             timeout = ts+newStoryRow.timeout
@@ -144,7 +152,8 @@ def storyGo(userId,answer = None, link=None):
                                 audio = newStoryRow.audio,
                                 time = timeout,
                                 link = newStoryRow.link,
-                                betweenBranch = betweenBranch)
+                                betweenBranch = betweenBranch,
+                                affront = affront)
         db.session.add(newTask)
         db.session.commit()   
         return newStoryRow     

@@ -35,3 +35,4 @@ class waiting(db.Model):
     time = db.Column(db.Integer)
     link = db.Column(db.Integer)
     betweenBranch = db.Column(db.Boolean)
+    affront = db.Column(db.Boolean)
