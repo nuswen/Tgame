@@ -141,7 +141,9 @@ def storyGo(userId,answer = None, link=None):
             betweenBranch = True
         if newStoryRow.speclink:
             for i in newStoryRow.speclink:
+                print(i)
                 if i == "tag":
+                    print(newStoryRow.speclink[i])
                     if newStoryRow.speclink[i] == True:
                         affront = True
         user.curBranch = newStoryRow.branch
