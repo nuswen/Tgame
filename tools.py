@@ -117,7 +117,11 @@ def storyGo(userId,answer = None, link=None):
         if waiting.affront:
             specMessages = models.spec_answ.query.filter_by(tag = "affront").all()
             specMessage = random.choice(specMessages)
-            poster(bot,userId,text=specMessage.message)
+            newTask = models.waiting(userId = userId, 
+                                message = specMessage.message,
+                                time = ts+5)
+            db.session.add(newTask)
+            db.session.commit()   
         elif waiting.betweenBranch:
             pass
     try:
