@@ -9,6 +9,7 @@ from io import StringIO
 from datetime import datetime
 import time
 from tele_bot_tools import *
+import random
 
 
 def start(userId):
@@ -110,10 +111,13 @@ def storyGo(userId,answer = None, link=None):
     storyRow = models.story.query.filter_by(ident = user.point).first()
     waiting = models.waiting.query.filter_by(userId = userId).first()
     if waiting:
+        ts = int(datetime.timestamp(datetime.utcnow()))
+        if (waiting.time-ts) <= 20:
+            return
         if waiting.affront:
-            specMessage = models.spec_answ.query.filter_by(tag = "affront").all()
-            print(specMessage)
-
+            specMessages = models.spec_answ.query.filter_by(tag = "affront").all()
+            specMessage = random.choice(specMessages)
+            poster(bot,userId,text=waiting.message)
         elif waiting.betweenBranch:
             pass
     try:
