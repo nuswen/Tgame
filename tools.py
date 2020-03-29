@@ -143,8 +143,7 @@ def storyGo(userId,answer = None, link=None):
             for i in newStoryRow.speclink:
                 print(i)
                 if i == "tag":
-                    print(newStoryRow.speclink[i])
-                    if newStoryRow.speclink[i] == True:
+                    if newStoryRow.speclink[i] == "affront":
                         affront = True
         user.curBranch = newStoryRow.branch
         if newStoryRow.timeout:
