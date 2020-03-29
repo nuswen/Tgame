@@ -106,7 +106,7 @@ def storyUp(idFileStory):
         
         db.session.commit()
 
-def specPost(tag):
+def specPost(userId,tag):
     specMessages = models.spec_answ.query.filter_by(tag = tag).all()
     specMessage = random.choice(specMessages)
     bot.send_chat_action(userId,"typing")
@@ -122,9 +122,9 @@ def storyGo(userId,answer = None, link=None):
         if (waiting.time-ts) <= 20:
             return
         if waiting.affront:
-            specPost("affront")
+            specPost(userId,"affront")
         elif waiting.betweenBranch:
-            specPost("betweenBranch")
+            specPost(userId,"betweenBranch")
     try:
         if answer:
             newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
