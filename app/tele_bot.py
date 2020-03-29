@@ -20,9 +20,7 @@ def hi_msg(msg):
 
 @bot.message_handler(content_types=['text'])
 def text(msg):
-    i = storyGo(msg.chat.id,answer=msg.text)
-    if i=='5':
-        print(1)
+    storyGo(msg.chat.id,answer=msg.text)
 
   
 @bot.message_handler(content_types=['photo'])

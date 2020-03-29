@@ -36,3 +36,8 @@ class waiting(db.Model):
     link = db.Column(db.Integer)
     betweenBranch = db.Column(db.Boolean)
     affront = db.Column(db.Boolean)
+
+class spec_answ(db.Model):
+    ident = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.Text)
+    message = db.Column(db.Text)

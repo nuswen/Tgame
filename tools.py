@@ -108,7 +108,14 @@ def storyUp(idFileStory):
 def storyGo(userId,answer = None, link=None):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     storyRow = models.story.query.filter_by(ident = user.point).first()
-                    
+    waiting = models.waiting.query.filter_by(userId = userId).first()
+    if waiting:
+        if waiting.affront:
+            specMessage = models.spec_answ.query.filter_by(tag = "affront").all()
+            print(specMessage)
+
+        elif waiting.betweenBranch:
+            pass
     try:
         if answer:
             newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
