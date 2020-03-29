@@ -140,9 +140,13 @@ def storyGo(userId,answer = None, link=None):
             user.branchTime = newBranchTime
             betweenBranch = True
         if newStoryRow.speclink:
+            print(1)
             for i in newStoryRow.speclink:
+                print(2)
                 if i == "affront":
+                    print(2)
                     if newStoryRow.speclink[i] == True:
+                        print(3)
                         affront = True
         user.curBranch = newStoryRow.branch
         if newStoryRow.timeout:
