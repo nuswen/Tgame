@@ -106,6 +106,13 @@ def storyUp(idFileStory):
         
         db.session.commit()
 
+def specPost(tag):
+    specMessages = models.spec_answ.query.filter_by(tag = tag).all()
+    specMessage = random.choice(specMessages)
+    bot.send_chat_action(userId,"typing")
+    time.sleep(1)
+    poster(bot,userId,text=specMessage.message)
+
 def storyGo(userId,answer = None, link=None):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     storyRow = models.story.query.filter_by(ident = user.point).first()
@@ -115,13 +122,9 @@ def storyGo(userId,answer = None, link=None):
         if (waiting.time-ts) <= 20:
             return
         if waiting.affront:
-            specMessages = models.spec_answ.query.filter_by(tag = "affront").all()
-            specMessage = random.choice(specMessages)
-            bot.send_chat_action(userId,"typing")
-            time.sleep(10)
-            poster(bot,userId,text=specMessage.message)
+            specPost("affront")
         elif waiting.betweenBranch:
-            pass
+            specPost("betweenBranch")
     try:
         if answer:
             newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
