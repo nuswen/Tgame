@@ -32,7 +32,8 @@ def start(userId):
                                     lastTime = ts,
                                     branchTime = branchTime,
                                     refCount = 0,
-                                    patron = False)
+                                    patron = False,
+                                    molestTimes = 0)
     
     db.session.add(newUser)
     db.session.commit()
@@ -201,3 +202,35 @@ def checkTask():
             elif task.message:
                 bot.send_chat_action(task.userId,"typing")
     time.sleep(1)
+
+def molest():
+    ts = int(datetime.timestamp(datetime.utcnow()))
+    users = models.telegram_users.query.all()
+    for user in users:
+        if ts-user.lastTime>environ['first_molest'] and user.molestTimes==0:
+            user.molestTimes = 1
+            specPost('first_molest')
+            storyGo(user.userId)
+        elif ts-user.lastTime>environ['second_molest'] and user.molestTimes==1:
+            user.molestTimes = 2
+            specPost('second_molest')
+            storyGo(user.userId)
+        elif ts-user.lastTime>environ['third_molest'] and user.molestTimes==2:
+            user.molestTimes = 2
+            specPost('third_molest')
+            for branch in user.branchTime:
+                if 'end' not in user.branchTime[branch]:
+                    startBranchMsg = models.story.query.filter_by(branch = branch).order_by(models.story.ident).first()
+                    user.point = startBranchMsg.ident
+                    user.branchTime.pop(branch)
+                    db.session.commit()
+                    break
+            storyGo(user.userId)
+        #Сутки спустя
+        elif ts-user.lastTime>86400 and user.molestTimes==3:
+            pass
+        #Месяц спустя
+        elif ts-user.lastTime>2678400 and user.molestTimes==4:
+            pass
+
+    time.sleep(10)

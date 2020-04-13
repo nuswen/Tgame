@@ -24,6 +24,7 @@ class telegram_users(db.Model):
     refCount = db.Column(db.Integer)
     patron = db.Column(db.Boolean)
     patronId = db.Column(db.Text)
+    molestTimes = db.Column(db.Integer)
 
 class waiting(db.Model):
     userId = db.Column(db.Integer, primary_key=True)
