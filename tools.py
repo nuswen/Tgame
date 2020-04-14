@@ -215,10 +215,12 @@ def molest():
             print('spec')
             storyGo(user.userId)
             print('story')
+            db.session.commit()
         elif ts-user.lastTime>int(environ['second_molest']) and user.molestTimes==1:
             user.molestTimes = 2
             specPost(user.userId,'second_molest')
             storyGo(user.userId)
+            db.session.commit()
         elif ts-user.lastTime>int(environ['third_molest']) and user.molestTimes==2:
             user.molestTimes = 2
             specPost(user.userId,'third_molest')
@@ -236,5 +238,4 @@ def molest():
         #Месяц спустя
         elif ts-user.lastTime>2678400 and user.molestTimes==4:
             pass
-
     time.sleep(10)
