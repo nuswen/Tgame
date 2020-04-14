@@ -224,13 +224,15 @@ def molest():
         elif ts-user.lastTime>int(environ['third_molest']) and user.molestTimes==2:
             user.molestTimes = 2
             specPost(user.userId,'third_molest')
-            for branch in user.branchTime:
+            branchTime = json.loads(user.branchTime)
+            for branch in branchTime:
                 print(branch)
-                print(str(user.branchTime[branch]))
-                if 'end' not in user.branchTime[branch]:
+                print(str(branchTime[branch]))
+                if 'end' not in branchTime[branch]:
                     startBranchMsg = models.story.query.filter_by(branch = branch).order_by(models.story.ident).first()
                     user.point = startBranchMsg.ident
-                    user.branchTime.pop(branch)
+                    branchTime.pop(branch)
+                    user.branchTime = json.dumps(branchTime)
                     db.session.commit()
                     break
             storyGo(user.userId)
