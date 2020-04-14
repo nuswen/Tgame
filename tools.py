@@ -209,15 +209,15 @@ def molest():
     for user in users:
         if ts-user.lastTime>int(environ['first_molest']) and user.molestTimes==0:
             user.molestTimes = 1
-            specPost(users.userId,'first_molest')
+            specPost(user.userId,'first_molest')
             storyGo(user.userId)
         elif ts-user.lastTime>int(environ['second_molest']) and user.molestTimes==1:
             user.molestTimes = 2
-            specPost(users.userId,'second_molest')
+            specPost(user.userId,'second_molest')
             storyGo(user.userId)
         elif ts-user.lastTime>int(environ['third_molest']) and user.molestTimes==2:
             user.molestTimes = 2
-            specPost(users.userId,'third_molest')
+            specPost(user.userId,'third_molest')
             for branch in user.branchTime:
                 if 'end' not in user.branchTime[branch]:
                     startBranchMsg = models.story.query.filter_by(branch = branch).order_by(models.story.ident).first()
