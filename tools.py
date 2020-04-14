@@ -225,7 +225,8 @@ def molest():
             user.molestTimes = 2
             specPost(user.userId,'third_molest')
             for branch in user.branchTime:
-                print(str(user.branchTime[branch]) + type(user.branchTime[branch]))
+                print(branch)
+                print(str(user.branchTime[branch]))
                 if 'end' not in user.branchTime[branch]:
                     startBranchMsg = models.story.query.filter_by(branch = branch).order_by(models.story.ident).first()
                     user.point = startBranchMsg.ident
