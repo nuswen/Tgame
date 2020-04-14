@@ -26,6 +26,18 @@ class telegram_users(db.Model):
     patronId = db.Column(db.Text)
     molestTimes = db.Column(db.Integer)
 
+class arc_telegram_users(db.Model):
+    idle = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer)
+    curBranch = db.Column(db.Text)
+    point = db.Column(db.Integer)
+    lastTime = db.Column(db.Integer)
+    branchTime = db.Column(JSONB)
+    refCount = db.Column(db.Integer)
+    patron = db.Column(db.Boolean)
+    patronId = db.Column(db.Text)
+    molestTimes = db.Column(db.Integer)
+
 class waiting(db.Model):
     userId = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.Text)

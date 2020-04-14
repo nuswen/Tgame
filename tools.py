@@ -208,38 +208,44 @@ def molest():
     users = models.telegram_users.query.all()
     for user in users:
         if ts-user.lastTime>int(environ['first_molest']) and user.molestTimes==0:
-            print('if')
             user.molestTimes = 1
-            print('user')
             specPost(user.userId,'first_molest')
-            print('spec')
             storyGo(user.userId)
-            print('story')
-            db.session.commit()
         elif ts-user.lastTime>int(environ['second_molest']) and user.molestTimes==1:
             user.molestTimes = 2
             specPost(user.userId,'second_molest')
             storyGo(user.userId)
-            db.session.commit()
         elif ts-user.lastTime>int(environ['third_molest']) and user.molestTimes==2:
             user.molestTimes = 3
             specPost(user.userId,'third_molest')
             branchTime = json.loads(user.branchTime)
             for branch in branchTime:
-                print(branch)
-                print(str(branchTime[branch]))
                 if 'end' not in branchTime[branch]:
                     startBranchMsg = models.story.query.filter_by(branch = branch).order_by(models.story.ident).first()
                     user.point = startBranchMsg.ident
                     branchTime.pop(branch)
                     user.branchTime = json.dumps(branchTime)
-                    db.session.commit()
                     break
-            storyGo(user.userId)
         #Сутки спустя
-        elif ts-user.lastTime>86400 and user.molestTimes==3:
-            pass
+        elif ts-user.lastTime>90 and user.molestTimes==3:
+            user.molestTimes = 4
         #Месяц спустя
-        elif ts-user.lastTime>2678400 and user.molestTimes==4:
-            pass
+        elif ts-user.lastTime>120 and user.molestTimes==4:
+            new_arc = models.arc_telegram_users(userId = user.userId, 
+                                                curBranch = user.curBranch, 
+                                                point = user.point,
+                                                lastTime = user.lastTime,
+                                                branchTime = user.branchTime,
+                                                refCount = user.refCount,
+                                                patron = user.patron,
+                                                molestTimes = user.molestTimes)
+            branchTime = {environ['start_branch']:{"start":ts}}
+            branchTime = json.dumps(branchTime)
+            user.curBranch = environ['start_branch']
+            user.point = environ['start_point']
+            user.branchTime = branchTime
+            user.molestTimes = 5
+            db.session.add(new_arc)
+            
+    db.session.commit()
     time.sleep(10)
