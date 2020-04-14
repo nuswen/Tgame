@@ -207,15 +207,15 @@ def molest():
     ts = int(datetime.timestamp(datetime.utcnow()))
     users = models.telegram_users.query.all()
     for user in users:
-        if ts-user.lastTime>environ['first_molest'] and user.molestTimes==0:
+        if ts-user.lastTime>int(environ['first_molest']) and user.molestTimes==0:
             user.molestTimes = 1
             specPost('first_molest')
             storyGo(user.userId)
-        elif ts-user.lastTime>environ['second_molest'] and user.molestTimes==1:
+        elif ts-user.lastTime>int(environ['second_molest']) and user.molestTimes==1:
             user.molestTimes = 2
             specPost('second_molest')
             storyGo(user.userId)
-        elif ts-user.lastTime>environ['third_molest'] and user.molestTimes==2:
+        elif ts-user.lastTime>int(environ['third_molest']) and user.molestTimes==2:
             user.molestTimes = 2
             specPost('third_molest')
             for branch in user.branchTime:
