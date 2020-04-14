@@ -208,9 +208,13 @@ def molest():
     users = models.telegram_users.query.all()
     for user in users:
         if ts-user.lastTime>int(environ['first_molest']) and user.molestTimes==0:
+            print('if')
             user.molestTimes = 1
+            print('user')
             specPost(user.userId,'first_molest')
+            print('spec')
             storyGo(user.userId)
+            print('story')
         elif ts-user.lastTime>int(environ['second_molest']) and user.molestTimes==1:
             user.molestTimes = 2
             specPost(user.userId,'second_molest')
