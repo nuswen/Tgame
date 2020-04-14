@@ -222,7 +222,7 @@ def molest():
             storyGo(user.userId)
             db.session.commit()
         elif ts-user.lastTime>int(environ['third_molest']) and user.molestTimes==2:
-            user.molestTimes = 2
+            user.molestTimes = 3
             specPost(user.userId,'third_molest')
             branchTime = json.loads(user.branchTime)
             for branch in branchTime:
