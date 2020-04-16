@@ -136,6 +136,7 @@ def storyGo(userId,answer = None, link=None):
         
         #TODO ловить ответы не по сценарию и отправлять ответ из списка
         if not newStoryRow:
+            print('не')
             return '5'
         ts = int(datetime.timestamp(datetime.utcnow()))
         user.point = newStoryRow.ident
@@ -205,6 +206,7 @@ def checkTask():
 
 def molest():
     ts = int(datetime.timestamp(datetime.utcnow()))
+    #TODO Можно не вытаскивать архивные строячки (molestTimes>4)
     users = models.telegram_users.query.all()
     for user in users:
         if ts-user.lastTime>int(environ['first_molest']) and user.molestTimes==0:
@@ -227,10 +229,10 @@ def molest():
                     user.branchTime = json.dumps(branchTime)
                     break
         #Сутки спустя
-        elif ts-user.lastTime>90 and user.molestTimes==3:
+        elif ts-user.lastTime>86400 and user.molestTimes==3:
             user.molestTimes = 4
         #Месяц спустя
-        elif ts-user.lastTime>120 and user.molestTimes==4:
+        elif ts-user.lastTime>2592000 and user.molestTimes==4:
             new_arc = models.arc_telegram_users(userId = user.userId, 
                                                 curBranch = user.curBranch, 
                                                 point = user.point,
