@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 
 from app import tele_bot, models
 
-@app.before_first_request
+"""@app.before_first_request
 def activate_job():
     def checkTask_worker():
         from tools import checkTask
@@ -28,7 +28,7 @@ def activate_job():
     thread_2 = threading.Thread(target=molest_worker)
     thread.start()
     thread_2.start()
-
+"""
 @app.route("/"+environ['token'], methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])

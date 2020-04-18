@@ -18,25 +18,22 @@ def start(userId):
     уже есть - continue
     '''
     exUser = models.telegram_users.query.filter_by(userId = userId).first()
-    print(exUser)
     if exUser:
-        return "continue"
-    
+        return "continue"   
     ts = int(datetime.timestamp(datetime.utcnow()))
-    branchTime = {environ['start_branch']:{"start":ts}}
-    branchTime = json.dumps(branchTime)
     
     newUser = models.telegram_users(userId = userId, 
-                                    curBranch = environ['start_branch'], 
                                     point = environ['start_point'],
                                     lastTime = ts,
-                                    branchTime = branchTime,
                                     refCount = 0,
                                     patron = False,
-                                    molestTimes = 0)
+                                    molestTimes = 0,
+                                    archive = False)
     
     db.session.add(newUser)
     db.session.commit()
+    msg = models.messages.query.filter_by(tag = environ['start_tag']).first()
+    poster(bot,userId,msg.message)
     return "start"
 
 def message(userId,data):
