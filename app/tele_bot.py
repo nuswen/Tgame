@@ -40,4 +40,5 @@ def CommandCsv(msg):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
+    #NewTest
     pass
