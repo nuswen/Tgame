@@ -33,8 +33,11 @@ def start(userId):
     db.session.add(newUser)
     db.session.commit()
     msg = models.messages.query.filter_by(tag = environ['start_tag']).first()
+    
     poster(bot,userId,msg.message,buttons=msg.buttons)
     return "start"
+
+def showButtons()
 
 def message(userId,data):
     user = models.teleusers.query.filter_by(Id = userId).first()

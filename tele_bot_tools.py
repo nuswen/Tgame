@@ -29,7 +29,7 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
 def inlineKeyboarder(keys):
     keyboard = types.InlineKeyboardMarkup()
     for key in keys:
-        keyboard.add(types.InlineKeyboardButton(text=key, callback_data=keys[key]))
+        keyboard.add(types.InlineKeyboardButton(text=key, callback_data=str(keys[key])))
     return keyboard
 
 def keyboarder(keys):
