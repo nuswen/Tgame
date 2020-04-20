@@ -31,4 +31,4 @@ def callback_inline(call):
     commands = json.loads(call.data)
     for command in commands:
         if command == 'show':
-            show(call.message.chat.id,commands)
+            show(call.message.chat.id,commands[command])
