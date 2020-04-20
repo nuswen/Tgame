@@ -14,6 +14,7 @@ import random
 
 def show(userId,commands):
     #commands = json.loads(commands)
+    print(type(commands))
     for command in commands:
         if command == 'messages':
             msg = models.messages.query.filter_by(tag = commands[command]).first()            
