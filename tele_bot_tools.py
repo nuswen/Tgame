@@ -25,11 +25,10 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
             if doc:
                 bot.send_document(chat_id=chatId, data=doc)
 
-
 def inlineKeyboarder(keys):
     keyboard = types.InlineKeyboardMarkup()
     for key in keys:
-        keyboard.add(types.InlineKeyboardButton(text=key, callback_data=str(keys[key])))
+        keyboard.add(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))
     return keyboard
 
 def keyboarder(keys):
