@@ -39,7 +39,7 @@ def start(userId):
     
     db.session.add(newUser)
     db.session.commit()
-    commands = '{"messages","%s"}' % environ['start_tag']
+    commands = '{"messages":"%s"}' % environ['start_tag']
     show(userId,commands)
     return "start"
 
