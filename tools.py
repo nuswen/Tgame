@@ -17,7 +17,8 @@ def show(userId,commands):
     for command in commands:
         if command == 'messages':
             msg = models.messages.query.filter_by(tag = commands[command]).first()  
-        print(msg)          
+        print(command)          
+        print(commands)          
         poster(bot,userId,msg.message,buttons=msg.buttons)
 
 def start(userId):
