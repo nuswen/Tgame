@@ -12,6 +12,13 @@ from tele_bot_tools import *
 import random
 
 
+def show(userId,commands):
+    commands = json.loads(commands)
+    for command in commands:
+        if command == 'messages':
+            msg = models.messages.query.filter_by(tag = commands[command]).first()            
+        poster(bot,userId,msg.message,buttons=msg.buttons)
+
 def start(userId):
     '''
     Пытается добавить нового юзера в базу - возвращает start если вышло, если юзверь 
@@ -32,11 +39,9 @@ def start(userId):
     
     db.session.add(newUser)
     db.session.commit()
-    msg = models.messages.query.filter_by(tag = environ['start_tag']).first()
-    
-    poster(bot,userId,msg.message,buttons=msg.buttons)
+    commands = '{"messages","%s"}' % environ['start_tag']
+    show(userId,commands)
     return "start"
-
 
 def message(userId,data):
     user = models.teleusers.query.filter_by(Id = userId).first()
