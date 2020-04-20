@@ -13,7 +13,7 @@ import random
 
 
 def show(userId,commands):
-    commands = json.loads(commands)
+    #commands = json.loads(commands)
     for command in commands:
         if command == 'messages':
             msg = models.messages.query.filter_by(tag = commands[command]).first()            
@@ -39,7 +39,8 @@ def start(userId):
     
     db.session.add(newUser)
     db.session.commit()
-    commands = '{"messages":"%s"}' % environ['start_tag']
+    #commands = '{"messages":"%s"}' % environ['start_tag']
+    commands = {'messages':environ['start_tag']}
     show(userId,commands)
     return "start"
 
