@@ -36,7 +36,7 @@ def start(userId):
                                         archive = False)
         db.session.add(newUser)
         db.session.commit()
-        commands = {'messages':environ['start_tag']}
+    commands = {'messages':environ['start_tag']}
     show(userId,commands)
 
 def message(userId,data):
