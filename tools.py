@@ -20,7 +20,7 @@ def show(userId,commands):
             post = poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
         else:
             post = poster(bot,userId,msg.message,buttons=msg.buttons)
-        print (post)
+        print (type(post))
 
 
 def start(userId):
