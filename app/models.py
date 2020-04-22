@@ -29,3 +29,4 @@ class telegram_users(db.Model):
     patronId = db.Column(db.Text)
     molestTimes = db.Column(db.Integer)
     archive = db.Column(db.Boolean)
+    lastMsgId = db.Column(db.Integer)

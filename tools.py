@@ -15,9 +15,13 @@ def show(userId,commands):
     for command in commands:
         if command == 'messages':
             msg = models.messages.query.filter_by(tag = commands[command]).first()  
-        print(command)          
-        print(commands)          
-        poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit)
+            user = models.telegram_users.query.filter_by(userId = userId).first()
+        if user.lastMsgId:         
+            post = poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit, user.lastMsgId)
+        else:
+            post = poster(bot,userId,msg.message,buttons=msg.buttons)
+        print (post)
+
 
 def start(userId):
     '''

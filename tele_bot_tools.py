@@ -12,24 +12,25 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
             print(text)
             print(buttons)
 
-            bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, reply_markup=inlineKeyboarder(buttons))
+            post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, reply_markup=inlineKeyboarder(buttons))
         else:
             if img:
                 bot.send_photo(chat_id=chatId, photo=img, reply_markup=inlineKeyboarder(buttons))
-            if text:
-                bot.send_message(chatId, text, reply_markup=inlineKeyboarder(buttons))
             if doc:
                 bot.send_document(chat_id=chatId, data=doc, reply_markup=inlineKeyboarder(buttons))
+            if text:
+                post = bot.send_message(chatId, text, reply_markup=inlineKeyboarder(buttons))
     else:
         if ed and not img and not doc:
-            bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text)
+            post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text)
         else:
             if img:
                 bot.send_photo(chat_id=chatId, photo=img)
-            if text:
-                bot.send_message(chatId, text)
             if doc:
                 bot.send_document(chat_id=chatId, data=doc)
+            if text:
+                post = bot.send_message(chatId, text)
+    return post
 
 def inlineKeyboarder(keys):
     keyboard = types.InlineKeyboardMarkup()
