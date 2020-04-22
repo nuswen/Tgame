@@ -18,10 +18,10 @@ def show(userId,commands):
             msg = models.messages.query.filter_by(tag = commands[command]).first()  
         if user.lastMsgId:         
             post = poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
-            user.lastMsgId = post.message_id
-            db.session.commit()
         else:
             post = poster(bot,userId,msg.message,buttons=msg.buttons)
+        user.lastMsgId = post.message_id
+        db.session.commit()
 
 
 def start(userId):
