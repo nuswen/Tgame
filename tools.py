@@ -21,6 +21,7 @@ def show(userId,commands):
         else:
             post = poster(bot,userId,msg.message,buttons=msg.buttons)
         print (post['message_id'])
+        print (type(post['message_id']))
 
 
 def start(userId):
