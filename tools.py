@@ -11,14 +11,13 @@ import time
 from tele_bot_tools import *
 import random
 
-
 def show(userId,commands):
     for command in commands:
         if command == 'messages':
             msg = models.messages.query.filter_by(tag = commands[command]).first()  
         print(command)          
         print(commands)          
-        poster(bot,userId,msg.message,buttons=msg.buttons)
+        poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit)
 
 def start(userId):
     '''
@@ -26,23 +25,19 @@ def start(userId):
     уже есть - continue
     '''
     exUser = models.telegram_users.query.filter_by(userId = userId).first()
-    if exUser:
-        return "continue"   
-    ts = int(datetime.timestamp(datetime.utcnow()))
-    
-    newUser = models.telegram_users(userId = userId, 
-                                    point = environ['start_point'],
-                                    lastTime = ts,
-                                    refCount = 0,
-                                    patron = False,
-                                    molestTimes = 0,
-                                    archive = False)
-    
-    db.session.add(newUser)
-    db.session.commit()
-    commands = {'messages':environ['start_tag']}
+    if not exUser:
+        ts = int(datetime.timestamp(datetime.utcnow()))
+        newUser = models.telegram_users(userId = userId, 
+                                        point = environ['start_point'],
+                                        lastTime = ts,
+                                        refCount = 0,
+                                        patron = False,
+                                        molestTimes = 0,
+                                        archive = False)
+        db.session.add(newUser)
+        db.session.commit()
+        commands = {'messages':environ['start_tag']}
     show(userId,commands)
-    return "start"
 
 def message(userId,data):
     user = models.teleusers.query.filter_by(Id = userId).first()
