@@ -6,6 +6,7 @@ class messages(db.Model):
     tag = db.Column(db.Text, primary_key=True)
     message = db.Column(db.Text)
     buttons = db.Column(JSONB)
+    edit = db.Column(db.Boolean)
 
 class book(db.Model):
     ident = db.Column(db.Integer, primary_key=True)
