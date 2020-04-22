@@ -7,6 +7,11 @@ import json
 def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=None, img=None):
     if buttons:
         if ed and not img and not doc:
+            print(chatId)
+            print(message_id)
+            print(text)
+            print(buttons)
+
             bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, reply_markup=inlineKeyboarder(buttons))
         else:
             if img:
