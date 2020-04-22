@@ -13,11 +13,11 @@ import random
 
 def show(userId,commands):
     for command in commands:
+        user = models.telegram_users.query.filter_by(userId = userId).first()
         if command == 'messages':
             msg = models.messages.query.filter_by(tag = commands[command]).first()  
-            user = models.telegram_users.query.filter_by(userId = userId).first()
         if user.lastMsgId:         
-            post = poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit, user.lastMsgId)
+            post = poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
         else:
             post = poster(bot,userId,msg.message,buttons=msg.buttons)
         print (post)
