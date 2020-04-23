@@ -22,9 +22,8 @@ def show(userId,commands):
                 post = poster(bot,userId,msg.message,buttons=msg.buttons) 
         elif command == 'book':
             book = models.book.query.filter_by(ident = user.curBook).first()
-            whatWords = json.loads(book.firstLastWord)
-            words = models.words.query.filter(models.words.ident >= whatWords['start'], 
-                                                models.words.ident <= whatWords['end']).all()
+            words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
+                                                models.words.ident <= book.firstLastWord['end']).all()
             print(words)
             #post = poster(bot,userId,book.sentence,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
         user.lastMsgId = post.message_id
@@ -45,7 +44,9 @@ def start(userId):
                                         refCount = 0,
                                         patron = False,
                                         molestTimes = 0,
-                                        archive = False)
+                                        archive = False,
+                                        curBook = 0,
+                                        curStBook = 0)
         db.session.add(newUser)
         db.session.commit()
     commands = {'messages':environ['start_tag']}
