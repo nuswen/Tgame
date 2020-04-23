@@ -30,3 +30,5 @@ class telegram_users(db.Model):
     molestTimes = db.Column(db.Integer)
     archive = db.Column(db.Boolean)
     lastMsgId = db.Column(db.Integer)
+    curBook = db.Column(db.Integer)
+    curStBook = db.Column(db.Integer)

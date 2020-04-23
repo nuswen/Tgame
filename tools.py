@@ -15,11 +15,18 @@ def show(userId,commands):
     for command in commands:
         user = models.telegram_users.query.filter_by(userId = userId).first()
         if command == 'messages':
-            msg = models.messages.query.filter_by(tag = commands[command]).first()  
-        if user.lastMsgId:         
-            post = poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
-        else:
-            post = poster(bot,userId,msg.message,buttons=msg.buttons)
+            msg = models.messages.query.filter_by(tag = commands[command]).first() 
+            if user.lastMsgId:         
+                post = poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
+            else:
+                post = poster(bot,userId,msg.message,buttons=msg.buttons) 
+        elif command == 'book':
+            book = models.book.query.filter_by(ident = user.curBook).first()
+            whatWords = json.loads(book.firstLastWord)
+            words = models.words.query.filter(models.words.ident >= whatWords['start'], 
+                                                models.words.ident <= whatWords['end']).all()
+            print(words)
+            #post = poster(bot,userId,book.sentence,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
         user.lastMsgId = post.message_id
         db.session.commit()
 
