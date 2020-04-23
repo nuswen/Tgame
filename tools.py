@@ -37,7 +37,7 @@ def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = 0):
     isBreak = False
     i = 1
     for word in words:
-        if prevLastWord > i:
+        if prevLastWord >= i:
             i=i+1
             continue
         if buttons.get(word.word):
