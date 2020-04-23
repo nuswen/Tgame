@@ -29,7 +29,7 @@ def show(userId,commands):
         user.lastMsgId = post.message_id
         db.session.commit()
 
-def wrds(userId,curBook,ed=False,lastMsg=None,lastWord = 0):
+def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = 0):
     book = models.book.query.filter_by(ident = curBook).first()
     words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
                                         models.words.ident <= book.firstLastWord['end']).all()
@@ -37,7 +37,7 @@ def wrds(userId,curBook,ed=False,lastMsg=None,lastWord = 0):
     isBreak = False
     i = 1
     for word in words:
-        if lastWord > i:
+        if prevLastWord > i:
             i=i+1
             continue
         if buttons.get(word.word):
