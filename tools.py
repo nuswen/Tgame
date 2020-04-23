@@ -26,7 +26,7 @@ def show(userId,commands):
         user.lastMsgId = post.message_id
         db.session.commit()
 
-def nextWords(userId):
+def nextWords(userId,curBook):
     book = models.book.query.filter_by(ident = curBook).first()
     words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
                                         models.words.ident <= book.firstLastWord['end']).all()
