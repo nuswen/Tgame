@@ -43,7 +43,7 @@ def nextWords(userId,curBook):
         buttons.update({word.word:json.dumps({'addword':word.ident})})
     if isBreak:
         buttons.update({'>':json.dumps({'nextWords':lastWord})})
-    buttons.update({'>>':json.dumps({'nextBook':0})})
+    buttons.update({'>>':json.dumps({'show':{'nextBook':0}})})
     post = poster(bot,userId,book.sentence,buttons=buttons)
     return post
 
