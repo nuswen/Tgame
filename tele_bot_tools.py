@@ -36,7 +36,7 @@ def inlineKeyboarder(keys):
     keyboard = types.InlineKeyboardMarkup()
     keyList = []
     for key in keys:
-        keyList.add(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))
+        keyList.append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))
     keyboard.add(keyList)
     return keyboard
 
