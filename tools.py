@@ -22,7 +22,7 @@ def show(userId,commands):
                 post = poster(bot,userId,msg.message,buttons=msg.buttons) 
         elif command == 'nextBook':
             user.curBook = user.curBook + 1
-            post = nextWords(userId,curBook)
+            post = nextWords(userId,user.curBook)
         user.lastMsgId = post.message_id
         db.session.commit()
 
