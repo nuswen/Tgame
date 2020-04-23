@@ -31,7 +31,7 @@ def nextWords(userId):
     words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
                                         models.words.ident <= book.firstLastWord['end']).all()
     buttons = {}
-    isBreak = Flase
+    isBreak = False
     for word in words:
         if buttons.get(word.word):
             isBreak = True
