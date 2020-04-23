@@ -25,7 +25,7 @@ def show(userId,commands):
             user.curBook = user.curBook + 1
             post = wrds(userId,user.curBook)
         elif command == 'book':
-            post = wrds(userId,user.curBook,ed=True,lastMsg=user.lastMsgId, lastWord=commands[command])
+            post = wrds(userId,user.curBook,ed=True,lastMsg=user.lastMsgId, prevLastWord=commands[command])
         user.lastMsgId = post.message_id
         db.session.commit()
 
