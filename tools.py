@@ -41,6 +41,7 @@ def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = -1):
     buttons = {}
     isBreak = False
     for word in words:
+        print(buttons)
         if buttons.get(word.word):
             isBreak = True
             break
