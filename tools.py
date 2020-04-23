@@ -24,8 +24,12 @@ def show(userId,commands):
             book = models.book.query.filter_by(ident = user.curBook).first()
             words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
                                                 models.words.ident <= book.firstLastWord['end']).all()
-            print(words)
-            #post = poster(bot,userId,book.sentence,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
+            buttons = {}
+            for word in words:
+                if buttons.get(word.word):
+                    break
+                buttons.update({word.word:json.dumps({'addword':word.ident})})
+            post = poster(bot,userId,book.sentence,buttons=buttons)
         user.lastMsgId = post.message_id
         db.session.commit()
 
