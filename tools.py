@@ -35,9 +35,9 @@ def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = 0):
                                         models.words.ident <= book.firstLastWord['end']).all()
     buttons = {}
     isBreak = False
-    i = 1
+    i = 0
     for word in words:
-        if prevLastWord >= i:
+        if prevLastWord > i:
             i=i+1
             continue
         if buttons.get(word.word):
