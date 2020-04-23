@@ -13,6 +13,7 @@ import random
 
 def show(userId,commands):
     for command in commands:
+        print(command)
         user = models.telegram_users.query.filter_by(userId = userId).first()
         if command == 'messages':
             msg = models.messages.query.filter_by(tag = commands[command]).first() 
@@ -21,7 +22,6 @@ def show(userId,commands):
             else:
                 post = poster(bot,userId,msg.message,buttons=msg.buttons) 
         elif command == 'nextBook':
-            print(1)
             user.curBook = user.curBook + 1
             post = wrds(userId,user.curBook)
         elif command == 'book':
