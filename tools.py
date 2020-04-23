@@ -31,7 +31,7 @@ def show(userId,commands):
 
 def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = -1):
     book = models.book.query.filter_by(ident = curBook).first()
-    if prevLastWord>0:
+    if prevLastWord<0:
         words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
                                             models.words.ident <= book.firstLastWord['end']).all()
     else:
