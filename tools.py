@@ -20,19 +20,32 @@ def show(userId,commands):
                 post = poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
             else:
                 post = poster(bot,userId,msg.message,buttons=msg.buttons) 
-        elif command == 'book':
-            book = models.book.query.filter_by(ident = user.curBook).first()
-            words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
-                                                models.words.ident <= book.firstLastWord['end']).all()
-            buttons = {}
-            for word in words:
-                if buttons.get(word.word):
-                    break
-                buttons.update({word.word:json.dumps({'addword':word.ident})})
-            post = poster(bot,userId,book.sentence,buttons=buttons)
+        elif command == 'nextBook':
+            user.curBook = user.curBook + 1
+            post = nextWords(userId,curBook)
         user.lastMsgId = post.message_id
         db.session.commit()
 
+def nextWords(userId):
+    book = models.book.query.filter_by(ident = curBook).first()
+    words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
+                                        models.words.ident <= book.firstLastWord['end']).all()
+    buttons = {}
+    isBreak = Flase
+    for word in words:
+        if buttons.get(word.word):
+            isBreak = True
+            break
+        if len(buttons) > 6:
+            isBreak = True
+            break
+        lastWord = word.ident
+        buttons.update({word.word:json.dumps({'addword':word.ident})})
+    if isBreak:
+        buttons.update({'>':json.dumps({'nextWords':lastWord})})
+    buttons.update({'>>':json.dumps({'nextBook':0})})
+    post = poster(bot,userId,book.sentence,buttons=buttons)
+    return post
 
 def start(userId):
     '''
