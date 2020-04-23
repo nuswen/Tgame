@@ -25,17 +25,21 @@ def show(userId,commands):
             user.curBook = user.curBook + 1
             post = wrds(userId,user.curBook)
         elif command == 'book':
-            post = wrds(userId,user.curBook)
+            post = wrds(userId,user.curBook,ed=True,lastMsg=user.lastMsgId, lastWord=commands[command])
         user.lastMsgId = post.message_id
         db.session.commit()
 
-def wrds(userId,curBook):
+def wrds(userId,curBook,ed=False,lastMsg=None,lastWord = 0):
     book = models.book.query.filter_by(ident = curBook).first()
     words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
                                         models.words.ident <= book.firstLastWord['end']).all()
     buttons = {}
     isBreak = False
+    i = 1
     for word in words:
+        if lastWord > i:
+            i=i+1
+            continue
         if buttons.get(word.word):
             isBreak = True
             break
@@ -47,7 +51,10 @@ def wrds(userId,curBook):
     if isBreak:
         buttons.update({'>':{'show':{'book':lastWord}}})
     buttons.update({'>>':{'show':{'nextBook':0}}})
-    post = poster(bot,userId,book.sentence,buttons=buttons)
+    if ed:
+        post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg)
+    else:
+        post = poster(bot,userId,book.sentence,buttons=buttons)
     return post
 
 def start(userId):
