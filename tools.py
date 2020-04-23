@@ -47,7 +47,7 @@ def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = -1):
         if len(buttons) > 6:
             isBreak = True
             break
-        lastWord = word.ident
+        lastWord = word.ident + 1
         buttons.update({word.word:json.dumps({'addword':word.ident})})
     if isBreak:
         buttons.update({'>':{'show':{'book':lastWord}}})
