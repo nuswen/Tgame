@@ -22,11 +22,13 @@ def show(userId,commands):
                 post = poster(bot,userId,msg.message,buttons=msg.buttons) 
         elif command == 'nextBook':
             user.curBook = user.curBook + 1
-            post = nextWords(userId,user.curBook)
+            post = wrds(userId,user.curBook)
+        elif command == 'book':
+            post = wrds(userId,user.curBook)
         user.lastMsgId = post.message_id
         db.session.commit()
 
-def nextWords(userId,curBook):
+def wrds(userId,curBook):
     book = models.book.query.filter_by(ident = curBook).first()
     words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
                                         models.words.ident <= book.firstLastWord['end']).all()
@@ -42,7 +44,7 @@ def nextWords(userId,curBook):
         lastWord = word.ident
         buttons.update({word.word:json.dumps({'addword':word.ident})})
     if isBreak:
-        buttons.update({'>':json.dumps({'nextWords':lastWord})})
+        buttons.update({'>':json.dumps({'book':lastWord})})
     buttons.update({'>>':json.dumps({'show':{'nextBook':0}})})
     post = poster(bot,userId,book.sentence,buttons=buttons)
     return post
