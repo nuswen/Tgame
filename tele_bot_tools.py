@@ -32,16 +32,20 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
                 post = bot.send_message(chatId, text)
     return post
 
-def inlineKeyboarder(keys):
-    keyboard = types.InlineKeyboardMarkup()
-    '''keyList = []
-    for key in keys:
-        keyList.append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))'''
-    a = types.InlineKeyboardButton(text='key', callback_data='g')
-    b = types.InlineKeyboardButton(text='key1', callback_data='g3')
-    c = types.InlineKeyboardButton(text='key2', callback_data='g4')
-    keyboard.row([a,b,c])
-    return keyboard
+def inlineKeyboarder(rows):
+    rows = [{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}},{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}}]
+    #Функция должна собирать клавиатуру для бота, получает keys в виде словаря {'key':'call_back_data',...}
+    keysRows = [[],]
+    rowCount = 0
+    isBreak = False
+
+    #проходимся по ключам
+    for row in rows:
+        for key in row:
+            keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))
+        rowCount = rowCount + 1
+    
+    return types.InlineKeyboardMarkup(keysRows)
 
 def keyboarder(keys):
     keyboard = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
