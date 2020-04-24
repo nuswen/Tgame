@@ -35,7 +35,7 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
 def inlineKeyboarder(rows):
     rows = [{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}},{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}}]
     #Функция должна собирать клавиатуру для бота, получает keys в виде словаря {'key':'call_back_data',...}
-    keysRows = [[]]
+    keysRows = [[],]
     rowCount = 0
 
     #проходимся по ключам
