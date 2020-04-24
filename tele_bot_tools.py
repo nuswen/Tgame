@@ -34,10 +34,11 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
 
 def inlineKeyboarder(rows):
     rows = [{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}},{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}}]
-    keysRows = [[],]
+    keysRows = []
     rowCount = 0
 
     for row in rows:
+        keysRows.append([])
         rowCount = len(keysRows)-1
         for key in row:
             keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data='2'))
