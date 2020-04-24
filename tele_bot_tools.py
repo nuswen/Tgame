@@ -34,24 +34,18 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
 
 def inlineKeyboarder(rows):
     rows = [{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}},{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}}]
+    keyboard = types.InlineKeyboardMarkup()
     keysRows = []
     rowCount = 0
 
-    """for row in rows:
+    for row in rows:
         keysRows.append([])
         rowCount = len(keysRows)-1
         for key in row:
-            keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))
-        print (keysRows)
-    """
-    a = types.InlineKeyboardButton(text='key0', callback_data='0')
-    b = types.InlineKeyboardButton(text='key1', callback_data='1')
-    c = types.InlineKeyboardButton(text='key2', callback_data='2')
-    r = [[a,b],[c]]
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.row_width = 2
-    keyboard.add([a,b,c])
-    print (keyboard)
+            keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(row[key])))
+
+    for row in keysRows:
+        keyboard.add(row)
     return keyboard
 
 def keyboarder(keys):
