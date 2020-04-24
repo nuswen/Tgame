@@ -34,25 +34,39 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
 
 def inlineKeyboarder(rows):
     rows = [{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}},{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}}]
+    keyboard = types.InlineKeyboardMarkup()
     keysRows = []
     rowCount = 0
 
-    """for row in rows:
+    for row in rows:
         keysRows.append([])
         rowCount = len(keysRows)-1
         for key in row:
             keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))
         print (keysRows)
-    """
-    a = types.InlineKeyboardButton(text='key0', callback_data='0')
-    b = types.InlineKeyboardButton(text='key1', callback_data='1')
-    c = types.InlineKeyboardButton(text='key2', callback_data='2')
-    z = None
-    r = [[a,b],[c]]
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.row_width = 2
-    keyboard.row([a,b,c])
-    print (keyboard)
+    
+    for row in keysRows:
+        if len(row) == 1:
+            keyboard.row(row[0])
+        elif len(row) == 2:
+            keyboard.row(row[0],row[1])
+        elif len(row) == 3:
+            keyboard.row(row[0],row[1],row[2])
+        elif len(row) == 4:
+            keyboard.row(row[0],row[1],row[2],row[3])
+        elif len(row) == 5:
+            keyboard.row(row[0],row[1],row[2],row[3],row[4])
+        elif len(row) == 6:
+            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5])
+        elif len(row) == 7:
+            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5],row[6])
+        elif len(row) == 8:
+            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7])
+        elif len(row) == 9:
+            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8])
+        elif len(row) == 10:
+            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9])
+            
     return keyboard
 
 def keyboarder(keys):
