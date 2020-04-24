@@ -46,6 +46,7 @@ def inlineKeyboarder(rows):
 
     for row in keysRows:
         keyboard.row_width = len(row)
+        print(row)
         keyboard.add(row)
         break
     return keyboard
