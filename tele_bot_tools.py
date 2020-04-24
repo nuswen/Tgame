@@ -37,14 +37,18 @@ def inlineKeyboarder(rows):
     keysRows = []
     rowCount = 0
 
-    for row in rows:
+    """for row in rows:
         keysRows.append([])
         rowCount = len(keysRows)-1
         for key in row:
-            keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data='2'))
+            keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))
         print (keysRows)
-    
-    keyboard = types.InlineKeyboardMarkup(keysRows)
+    """
+    a = types.InlineKeyboardButton(text='key0', callback_data='0')
+    b = types.InlineKeyboardButton(text='key1', callback_data='1')
+    c = types.InlineKeyboardButton(text='key2', callback_data='2')
+    r = [[a,b],[c]]
+    keyboard = types.InlineKeyboardMarkup(r)
     print (keyboard)
     return keyboard
 
