@@ -45,6 +45,7 @@ def inlineKeyboarder(rows):
         print (keysRows)
     
     keyboard = types.InlineKeyboardMarkup(keysRows)
+    print (keyboard)
     return keyboard
 
 def keyboarder(keys):
