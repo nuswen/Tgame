@@ -40,7 +40,7 @@ def inlineKeyboarder(keys):
     a = types.InlineKeyboardButton(text='key', callback_data='g')
     b = types.InlineKeyboardButton(text='key1', callback_data='g3')
     c = types.InlineKeyboardButton(text='key2', callback_data='g4')
-    keyboard.add([a,b,c])
+    keyboard.row([a,b,c])
     return keyboard
 
 def keyboarder(keys):
