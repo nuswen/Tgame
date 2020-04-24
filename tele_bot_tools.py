@@ -43,6 +43,7 @@ def inlineKeyboarder(rows):
         rowCount = len(keysRows)-1
         for key in row:
             keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(row[key])))
+        print (keysRows)
         keysRows.append([])
     
     return types.InlineKeyboardMarkup(keysRows)
