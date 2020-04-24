@@ -46,7 +46,8 @@ def inlineKeyboarder(rows):
         print (keysRows)
         keysRows.append([])
     
-    return types.InlineKeyboardMarkup(keysRows)
+    keyboard = types.InlineKeyboardMarkup(keysRows)
+    return keyboard
 
 def keyboarder(keys):
     keyboard = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
