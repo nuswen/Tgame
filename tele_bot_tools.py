@@ -48,8 +48,11 @@ def inlineKeyboarder(rows):
     b = types.InlineKeyboardButton(text='key1', callback_data='1')
     c = types.InlineKeyboardButton(text='key2', callback_data='2')
     r = [[a,b],[c]]
-    keyboard = types.InlineKeyboardMarkup((a,b,c))
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.row_width = 2
     keyboard.add(a)
+    keyboard.add(b)
+    keyboard.add(c)
     print (keyboard)
     return keyboard
 
