@@ -34,10 +34,13 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
 
 def inlineKeyboarder(keys):
     keyboard = types.InlineKeyboardMarkup()
-    keyList = []
+    '''keyList = []
     for key in keys:
-        keyList.append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))
-    keyboard.add(keyList)
+        keyList.append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))'''
+    a = types.InlineKeyboardButton(text='key', callback_data='g'))
+    b = types.InlineKeyboardButton(text='key1', callback_data='g3'))
+    c = types.InlineKeyboardButton(text='key2', callback_data='g4'))
+    keyboard.add(a,b,c)
     return keyboard
 
 def keyboarder(keys):
