@@ -37,12 +37,11 @@ def inlineKeyboarder(rows):
     #Функция должна собирать клавиатуру для бота, получает keys в виде словаря {'key':'call_back_data',...}
     keysRows = [[],]
     rowCount = 0
-    isBreak = False
 
     #проходимся по ключам
     for row in rows:
         for key in row:
-            keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(keys[key])))
+            keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(row[key])))
         rowCount = rowCount + 1
     
     return types.InlineKeyboardMarkup(keysRows)
