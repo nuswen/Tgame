@@ -50,7 +50,7 @@ def inlineKeyboarder(rows):
     r = [[a,b],[c]]
     keyboard = types.InlineKeyboardMarkup()
     keyboard.row_width = 2
-    keyboard.add(a,b,c)
+    keyboard.add([a,b,c])
     print (keyboard)
     return keyboard
 
