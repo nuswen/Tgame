@@ -45,7 +45,7 @@ def inlineKeyboarder(rows):
             keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(row[key])))
 
     for row in keysRows:
-        markup.row_width = len(row)
+        keyboard.row_width = len(row)
         keyboard.add(row)
         break
     return keyboard
