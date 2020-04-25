@@ -34,7 +34,7 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
     if startWord<0:
         startWord = book.firstLastWord['start']
     print('startWord')
-    print(startWord)
+    print(type(startWord))
     words = models.words.query.filter(models.words.ident >= startWord, 
                                         models.words.ident <= book.firstLastWord['end']).all()
     wordButtons = {}
