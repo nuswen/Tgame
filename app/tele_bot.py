@@ -11,7 +11,7 @@ from os import environ
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
-    newBut = models.messages(tag = 'userId',message = 'dddd',but=[{1:2},{2:3}]
+    newBut = models.messages(tag = 'userId',message = 'dddd',but=[{1:2},{2:3}])
     db.session.add(newBut)
     db.session.commit()
     #start(msg.chat.id)
