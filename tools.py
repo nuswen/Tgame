@@ -54,7 +54,7 @@ def sentence(user,ed=False,lastMsg=None,startWord = -1):
             isBreak = True
             break
         prevLastWord = word.ident
-        wordButtons.update({word.word:json.dumps({'addWord':{'word':word.ident,'startWord':startWord}})})
+        wordButtons.update({word.word:{'addWord':{'word':word.ident,'startWord':startWord}}})
     controlButtons.update({'>>':{'show':{'nextSentence':0}}})
     if startWord != book.firstLastWord['start']:
         controlButtons.update({'<':{'show':{'sentence':startWord-wordsAtTime}}})
