@@ -38,6 +38,7 @@ def addWord(userId,commands):
     sentence(user,ed=True,startWord=commands['startWord'])
         
 def sentence(user,ed=False,startWord = -1):
+    print(user)
     book = models.book.query.filter_by(ident = user.curSentence).first()
     if startWord<0:
         startWord = book.firstLastWord['start']
