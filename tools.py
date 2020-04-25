@@ -30,7 +30,7 @@ def show(userId,commands):
     
 def addWord(userId,commands):
     user = models.telegram_users.query.filter_by(userId = userId).first()
-    temp = user.words
+    temp = user.words.copy()
     temp.update({commands['word']:0})
     user.words = temp
     db.session.commit()
