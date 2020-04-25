@@ -4,7 +4,7 @@ from app import db
 import json
 
 
-def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=None, img=None):
+def poster(bot, chatId, text=None, buttons=None, lenRow=None, ed=False, message_id=None, doc=None, img=None):
     if buttons:
         if ed and not img and not doc:
             print(chatId)
@@ -12,14 +12,14 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
             print(text)
             print(buttons)
 
-            post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, reply_markup=inlineKeyboarder(buttons))
+            post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
         else:
             if img:
-                bot.send_photo(chat_id=chatId, photo=img, reply_markup=inlineKeyboarder(buttons))
+                bot.send_photo(chat_id=chatId, photo=img, reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
             if doc:
-                bot.send_document(chat_id=chatId, data=doc, reply_markup=inlineKeyboarder(buttons))
+                bot.send_document(chat_id=chatId, data=doc, reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
             if text:
-                post = bot.send_message(chatId, text, reply_markup=inlineKeyboarder(buttons))
+                post = bot.send_message(chatId, text, reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
     else:
         if ed and not img and not doc:
             post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text)
@@ -32,8 +32,10 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
                 post = bot.send_message(chatId, text)
     return post
 
-def inlineKeyboarder(rows):
+def inlineKeyboarder(rows, lenRow=None):
+    if not lenRow: lenRow=10
     keyboard = types.InlineKeyboardMarkup()
+    keyboard.row_width = lenRow
     keysRows = []
     rowCount = 0
 
@@ -46,25 +48,25 @@ def inlineKeyboarder(rows):
     
     for row in keysRows:
         if len(row) == 1:
-            keyboard.row(row[0])
+            keyboard.add(row[0])
         elif len(row) == 2:
-            keyboard.row(row[0],row[1])
+            keyboard.add(row[0],row[1])
         elif len(row) == 3:
-            keyboard.row(row[0],row[1],row[2])
+            keyboard.add(row[0],row[1],row[2])
         elif len(row) == 4:
-            keyboard.row(row[0],row[1],row[2],row[3])
+            keyboard.add(row[0],row[1],row[2],row[3])
         elif len(row) == 5:
-            keyboard.row(row[0],row[1],row[2],row[3],row[4])
+            keyboard.add(row[0],row[1],row[2],row[3],row[4])
         elif len(row) == 6:
-            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5])
+            keyboard.add(row[0],row[1],row[2],row[3],row[4],row[5])
         elif len(row) == 7:
-            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5],row[6])
+            keyboard.add(row[0],row[1],row[2],row[3],row[4],row[5],row[6])
         elif len(row) == 8:
-            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7])
+            keyboard.add(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7])
         elif len(row) == 9:
-            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8])
+            keyboard.add(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8])
         elif len(row) == 10:
-            keyboard.row(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9])
+            keyboard.add(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9])
             
     return keyboard
 

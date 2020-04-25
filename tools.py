@@ -45,7 +45,7 @@ def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = -1):
         if wordButtons.get(word.word):
             isBreak = True
             break
-        if len(wordButtons) > 6:
+        if len(wordButtons) >= 6:
             isBreak = True
             break
         lastWord = word.ident + 1
@@ -55,9 +55,9 @@ def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = -1):
     controlButtons.update({'>>':{'show':{'nextBook':0}}})
     buttons = [wordButtons,controlButtons]
     if ed:
-        post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg)
+        post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=3)
     else:
-        post = poster(bot,userId,book.sentence,buttons=buttons)
+        post = poster(bot,userId,book.sentence,buttons=buttons,lenRow=3)
     return post
 
 def start(userId):
