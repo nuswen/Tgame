@@ -29,9 +29,10 @@ def show(userId,commands):
         db.session.commit()
     
 def addWord(userId,commands):
-    print(commands)
     user = models.telegram_users.query.filter_by(userId = userId).first()
+    print(user.words)
     user.words.update({commands['word']:0})
+    print(user.words)
     db.session.commit()
     sentence(user,ed=True,lastMsg=user.lastMsgId,startWord=commands['startWord'])
         

@@ -29,7 +29,6 @@ def CommandCsv(msg):
 def callback_inline(call):
     commands = json.loads(call.data)
     for command in commands:
-        print(command)
         if command == 'show':
             show(call.message.chat.id,commands[command])
         elif command == 'addWord':
