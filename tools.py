@@ -20,11 +20,11 @@ def show(userId,commands):
                 post = poster(bot,userId,msg.message,buttons=msg.buttons,ed=msg.edit, message_id=user.lastMsgId)
             else:
                 post = poster(bot,userId,msg.message,buttons=msg.buttons) 
-        elif command == 'nextBook':
-            user.curBook = user.curBook + 1
-            post = sentence(userId,user.curBook)
+        elif command == 'nextSentence':
+            user.curSentence = user.curSentence + 1
+            post = sentence(userId,user.curSentence)
         elif command == 'sentence':
-            post = sentence(userId,user.curBook,ed=True,lastMsg=user.lastMsgId, startWord=commands[command])
+            post = sentence(userId,user.curSentence,ed=True,lastMsg=user.lastMsgId, startWord=commands[command])
         user.lastMsgId = post.message_id
         db.session.commit()
 
@@ -46,7 +46,7 @@ def sentence(userId,curSentence,ed=False,lastMsg=None,startWord = -1):
             break
         prevLastWord = word.ident
         wordButtons.update({word.word:json.dumps({'addword':word.ident})})
-    controlButtons.update({'>>':{'show':{'nextBook':0}}})
+    controlButtons.update({'>>':{'show':{'nextSentence':0}}})
     if startWord != book.firstLastWord['start']:
         controlButtons.update({'<':{'show':{'sentence':startWord-wordsAtTime}}})
     if isBreak:
@@ -73,7 +73,7 @@ def start(userId):
                                         patron = False,
                                         molestTimes = 0,
                                         archive = False,
-                                        curBook = 0,
+                                        curSentence = 0,
                                         curStBook = 0)
         db.session.add(newUser)
         db.session.commit()
