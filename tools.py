@@ -54,6 +54,7 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
         wordButtons.update({word.word:json.dumps({'addword':word.ident})})
     controlButtons.update({'>>':{'show':{'nextBook':0}}})
     if startWord != book.firstLastWord['start']:
+        print(startWord)
         controlButtons.update({'<':{'show':{'book':startWord}}})
     if isBreak:
         controlButtons.update({'>':{'show':{'book':prevLastWord+1}}})
