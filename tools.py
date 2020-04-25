@@ -45,7 +45,7 @@ def sentence(user,ed=False,startWord = -1):
     controlButtons = {}
     isBreak = False
     for word in words:
-        if word.ident in user.words:
+        if word.ident in json.loads(user.words):
             continue
         if wordButtons.get(word.word):
             isBreak = True
