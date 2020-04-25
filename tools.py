@@ -55,6 +55,7 @@ def sentence(user,ed=False,startWord = -1):
             isBreak = True
             break
         prevLastWord = word.ident
+        print(type(word.ident))
         wordButtons.update({word.word:{'addWord':{'word':word.ident,'startWord':startWord}}})
     controlButtons.update({'>>':{'show':{'nextSentence':0}}})
     if startWord != book.firstLastWord['start']:
