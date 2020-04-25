@@ -30,14 +30,10 @@ def show(userId,commands):
     
 def addWord(userId,commands):
     user = models.telegram_users.query.filter_by(userId = userId).first()
-    print(type(commands['word']))
     user.words.update({commands['word']:0})
-    user = models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
-    #user.words = temp
+    models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
     db.session.commit()
-    print(user)
     sentence(user,ed=True,startWord=commands['startWord'])
-        
 def sentence(user,ed=False,startWord = -1):
     book = models.book.query.filter_by(ident = user.curSentence).first()
     if startWord<0:
