@@ -31,7 +31,7 @@ def show(userId,commands):
 def addWord(userId,commands):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     user.words.update({commands['word']:0})
-    user.words = json.dumps(user.words)
+    user.words = user.words
     db.session.commit()
     sentence(user,ed=True,startWord=commands['startWord'])
         
@@ -45,7 +45,7 @@ def sentence(user,ed=False,startWord = -1):
     controlButtons = {}
     isBreak = False
     for word in words:
-        if word.ident in json.loads(user.words):
+        if word.ident in user.words:
             continue
         if wordButtons.get(word.word):
             isBreak = True
