@@ -33,7 +33,6 @@ def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=
     return post
 
 def inlineKeyboarder(rows):
-    rows = [{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}},{'hi':{'show':'ttt'},'buy':{'show':'ttt'},'lo':{'show':'ttt'}}]
     keyboard = types.InlineKeyboardMarkup()
     keysRows = []
     rowCount = 0
