@@ -27,7 +27,6 @@ def show(userId,commands):
             post = sentence(user,ed=True, startWord=commands[command])
         user.lastMsgId = post.message_id
         db.session.commit()
-    
 def addWord(userId,commands,callId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     bot.answer_callback_query(callId, text=pickWordMsg)
@@ -67,7 +66,6 @@ def sentence(user,ed=False,startWord = -1):
     else:
         post = poster(bot,user.userId,book.sentence,buttons=buttons,lenRow=wordsInRow)
     return post
-
 def start(userId):
     '''
     Пытается добавить нового юзера в базу - возвращает start если вышло, если юзверь 
