@@ -57,7 +57,7 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
     if isBreak:
         print('prevLastWord')
         print(prevLastWord)
-        controlButtons.update({'>':{'show':{'book':prevLastWord+1}}})
+        controlButtons.update({'>':{'show':{'book':prevLastWord}}})
     buttons = [wordButtons,controlButtons]
     if ed:
         post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=3)
