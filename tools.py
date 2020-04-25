@@ -4,7 +4,7 @@ from app import bot
 import requests
 import json
 import csv
-from os import environ
+from conf import *
 from io import StringIO
 from datetime import datetime
 import time
@@ -41,21 +41,21 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
         if wordButtons.get(word.word):
             isBreak = True
             break
-        if len(wordButtons) >= environ['How_much_word_for_once']:
+        if len(wordButtons) >= wordsAtTime):
             isBreak = True
             break
         prevLastWord = word.ident
         wordButtons.update({word.word:json.dumps({'addword':word.ident})})
     controlButtons.update({'>>':{'show':{'nextBook':0}}})
     if startWord != book.firstLastWord['start']:
-        controlButtons.update({'<':{'show':{'book':startWord-environ['How_much_word_for_once']}}})
+        controlButtons.update({'<':{'show':{'book':startWord-wordsAtTime}}})
     if isBreak:
         controlButtons.update({'>':{'show':{'book':prevLastWord+1}}})
     buttons = [wordButtons,controlButtons]
     if ed:
-        post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=environ['How_much_word_in_row'])
+        post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=wordsInRow)
     else:
-        post = poster(bot,userId,book.sentence,buttons=buttons,lenRow=environ['How_much_word_in_row'])
+        post = poster(bot,userId,book.sentence,buttons=buttons,lenRow=wordsInRow)
     return post
 
 def start(userId):
@@ -67,7 +67,7 @@ def start(userId):
     if not exUser:
         ts = int(datetime.timestamp(datetime.utcnow()))
         newUser = models.telegram_users(userId = userId, 
-                                        point = environ['start_point'],
+                                        point = startPoint,
                                         lastTime = ts,
                                         refCount = 0,
                                         patron = False,
@@ -77,145 +77,11 @@ def start(userId):
                                         curStBook = 0)
         db.session.add(newUser)
         db.session.commit()
-    commands = {'messages':environ['start_tag']}
+    commands = {'messages':startTag}
     show(userId,commands)
 
-def message(userId,data):
-    user = models.teleusers.query.filter_by(Id = userId).first()
-    message = data['data']['stitches'][user.Point]['content'][0]
-    keys=[]
-    img = None
-    for i in data['data']['stitches'][user.Point]['content'][1:]:
-        if 'image' in i:
-            img = i['image']
-        if 'option' in i:
-            keys.append(i['option'])
-    if keys == []:
-        keys = None
-    return message,keys,img
 
-def _tryInt(string):
-    try:
-        num = int(string)
-    except:
-        num = None
-    return num
-
-def storyUp(idFileStory):
-    '''
-    Получает fileId загруженного файла, скачивает его, пытается разобрать его как CSV и добавляет к истории
-    '''
-    telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
-    jTelePath = json.loads(telePath.text)
-    pathFile = jTelePath['result']['file_path']
-    if pathFile[-4:] == '.csv':
-        path = 'https://api.telegram.org/file/bot'+environ['token']+'/'
-        csvStream = requests.get(path+pathFile,stream = True)
-        vFile = StringIO(csvStream.text)
-        csvFile = list(csv.reader(vFile))
-        vFile.close()
-        models.story.query.delete()
-
-        for row in csvFile:
-
-            ident,message,answers,link,timeout,branch,photo,audio,speclink,doc = row
-
-            ident = _tryInt(ident)
-
-            if answers and not answers.isspace():
-                answers = json.loads(answers)
-
-            link = _tryInt(link)
-            timeout = _tryInt(timeout)
-
-            if speclink and not speclink.isspace():
-                speclink = json.loads(speclink)
-            
-            newRow = models.story( 
-                                    ident = ident,
-                                    message = message,
-                                    answers = answers,
-                                    link = link,
-                                    timeout = timeout,
-                                    branch = branch,
-                                    photo = photo,
-                                    audio = audio,
-                                    speclink = speclink,
-                                    doc = doc)
-            db.session.add(newRow)
-        
-        db.session.commit()
-
-def specPost(userId,tag):
-    specMessages = models.spec_answ.query.filter_by(tag = tag).all()
-    specMessage = random.choice(specMessages)
-    bot.send_chat_action(userId,"typing")
-    time.sleep(1)
-    poster(bot,userId,text=specMessage.message)
-
-def storyGo(userId,answer = None, link=None):
-    user = models.telegram_users.query.filter_by(userId = userId).first()
-    storyRow = models.story.query.filter_by(ident = user.point).first()
-    waiting = models.waiting.query.filter_by(userId = userId).first()
-    if waiting:
-        ts = int(datetime.timestamp(datetime.utcnow()))
-        if (waiting.time-ts) <= 20:
-            return
-        if waiting.affront:
-            specPost(userId,"affront")
-        elif waiting.betweenBranch:
-            specPost(userId,"betweenBranch")
-    try:
-        if answer:
-            newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
-        elif link:
-            newStoryRow = models.story.query.filter_by(ident = link).first()
-        else:
-            newStoryRow = storyRow
-        
-        #TODO ловить ответы не по сценарию и отправлять ответ из списка
-        if not newStoryRow:
-            return '5'
-        ts = int(datetime.timestamp(datetime.utcnow()))
-        user.point = newStoryRow.ident
-        user.lastTime = ts
-        betweenBranch = False
-        affront = False
-        if user.curBranch != newStoryRow.branch:
-            newBranchTime = json.loads(user.branchTime)
-            newBranchTime[user.curBranch].update({'end':ts})
-            newBranchTime.update({newStoryRow.branch:{"start":ts}})
-            newBranchTime = json.dumps(newBranchTime)
-            user.branchTime = newBranchTime
-            betweenBranch = True
-        if newStoryRow.speclink:
-            for i in newStoryRow.speclink:
-                if i == "tag":
-                    if newStoryRow.speclink[i] == "affront":
-                        affront = True
-        user.curBranch = newStoryRow.branch
-        if newStoryRow.timeout:
-            timeout = ts+newStoryRow.timeout
-        else:
-            timeout = ts + int(environ['std_timeout'])
-        
-        newTask = models.waiting(userId = userId, 
-                                message = newStoryRow.message,
-                                answers = newStoryRow.answers,
-                                doc = newStoryRow.doc,
-                                image = newStoryRow.photo,
-                                audio = newStoryRow.audio,
-                                time = timeout,
-                                link = newStoryRow.link,
-                                betweenBranch = betweenBranch,
-                                affront = affront)
-        db.session.add(newTask)
-        db.session.commit()   
-        return newStoryRow     
-    except Exception as e:
-        print(e)
-
-def checkTask():
+"""def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
     tasks = models.waiting.query.all()
     for task in tasks:
@@ -240,8 +106,9 @@ def checkTask():
             elif task.message:
                 bot.send_chat_action(task.userId,"typing")
     time.sleep(1)
+"""
 
-def molest():
+"""def molest():
     ts = int(datetime.timestamp(datetime.utcnow()))
     #TODO Можно не вытаскивать архивные строячки (molestTimes>4)
     users = models.telegram_users.query.all()
@@ -288,3 +155,4 @@ def molest():
             
     db.session.commit()
     time.sleep(10)
+"""
