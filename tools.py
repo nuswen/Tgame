@@ -41,7 +41,7 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
         if wordButtons.get(word.word):
             isBreak = True
             break
-        if len(wordButtons) >= wordsAtTime):
+        if len(wordButtons) >= wordsAtTime:
             isBreak = True
             break
         prevLastWord = word.ident
