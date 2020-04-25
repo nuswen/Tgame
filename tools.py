@@ -30,8 +30,12 @@ def show(userId,commands):
 
 def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
     book = models.book.query.filter_by(ident = curBook).first()
+    print(book.sentence)
+    print(startWord)
+
     if startWord<0:
         startWord = book.firstLastWord['start']
+        print(startWord)
     
     words = models.words.query.filter(models.words.ident >= startWord, 
                                         models.words.ident <= book.firstLastWord['end']).all()
