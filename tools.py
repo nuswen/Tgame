@@ -37,21 +37,23 @@ def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = -1):
     else:
         words = models.words.query.filter(models.words.ident >= prevLastWord, 
                                             models.words.ident <= book.firstLastWord['end']).all()
-    buttons = {}
+    wordButtons = {}
+    controlButtons = {}
     isBreak = False
     for word in words:
-        print(buttons)
-        if buttons.get(word.word):
+        print(wordButtons)
+        if wordButtons.get(word.word):
             isBreak = True
             break
-        if len(buttons) > 6:
+        if len(wordButtons) > 6:
             isBreak = True
             break
         lastWord = word.ident + 1
-        buttons.update({word.word:json.dumps({'addword':word.ident})})
+        wordButtons.update({word.word:json.dumps({'addword':word.ident})})
     if isBreak:
-        buttons.update({'>':{'show':{'book':lastWord}}})
-    buttons.update({'>>':{'show':{'nextBook':0}}})
+        controlButtons.update({'>':{'show':{'book':lastWord}}})
+    controlButtons.update({'>>':{'show':{'nextBook':0}}})
+    buttons = [wordButtons,controlButtons]
     if ed:
         post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg)
     else:
