@@ -5,14 +5,14 @@ import json
 
 
 def poster(bot, chatId, text=None, buttons=None, lenRow=None, ed=False, message_id=None, doc=None, img=None):
+        print('post')
+        print(chatId)
+        print(message_id)
+        print(text)
+        print(buttons)
+        print(lenRow)
     if buttons:
         if ed and not img and not doc:
-            print('post')
-            print(chatId)
-            print(message_id)
-            print(text)
-            print(buttons)
-            print(lenRow)
             post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
         else:
             if img:
