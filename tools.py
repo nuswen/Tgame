@@ -30,11 +30,8 @@ def show(userId,commands):
 
 def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
     book = models.book.query.filter_by(ident = curBook).first()
-
     if startWord<0:
         startWord = book.firstLastWord['start']
-    print('startWord')
-    print(type(startWord))
     words = models.words.query.filter(models.words.ident >= startWord, 
                                         models.words.ident <= book.firstLastWord['end']).all()
     wordButtons = {}
@@ -51,12 +48,8 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
         wordButtons.update({word.word:json.dumps({'addword':word.ident})})
     controlButtons.update({'>>':{'show':{'nextBook':0}}})
     if startWord != book.firstLastWord['start']:
-        print('startWord')
-        print(startWord)
-        controlButtons.update({'<':{'show':{'book':int(startWord)}}})
+        controlButtons.update({'<':{'show':{'book':startWord-6}}})
     if isBreak:
-        print('prevLastWord')
-        print(prevLastWord)
         controlButtons.update({'>':{'show':{'book':prevLastWord+1}}})
     buttons = [wordButtons,controlButtons]
     if ed:
