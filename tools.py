@@ -31,6 +31,7 @@ def show(userId,commands):
 def addWord(userId,commands):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     temp = user.words.copy()
+    print(type(commands['word']))
     temp.update({commands['word']:0})
     user.words = temp
     db.session.commit()
@@ -55,7 +56,6 @@ def sentence(user,ed=False,startWord = -1):
             isBreak = True
             break
         prevLastWord = word.ident
-        print(type(word.ident))
         wordButtons.update({word.word:{'addWord':{'word':word.ident,'startWord':startWord}}})
     controlButtons.update({'>>':{'show':{'nextSentence':0}}})
     if startWord != book.firstLastWord['start']:
