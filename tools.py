@@ -24,19 +24,17 @@ def show(userId,commands):
             user.curBook = user.curBook + 1
             post = wrds(userId,user.curBook)
         elif command == 'book':
-            post = wrds(userId,user.curBook,ed=True,lastMsg=user.lastMsgId, prevLastWord=commands[command])
+            post = wrds(userId,user.curBook,ed=True,lastMsg=user.lastMsgId, startWord=commands[command])
         user.lastMsgId = post.message_id
         db.session.commit()
 
-def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = -1):
+def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
     book = models.book.query.filter_by(ident = curBook).first()
-    print(prevLastWord)
-    if prevLastWord<=0:
-        words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
-                                            models.words.ident <= book.firstLastWord['end']).all()
-    else:
-        words = models.words.query.filter(models.words.ident >= prevLastWord, 
-                                            models.words.ident <= book.firstLastWord['end']).all()
+    if startWord<0:
+        startWord = book.firstLastWord['start']
+    
+    words = models.words.query.filter(models.words.ident >= startWord, 
+                                        models.words.ident <= book.firstLastWord['end']).all()
     wordButtons = {}
     controlButtons = {}
     isBreak = False
@@ -48,11 +46,13 @@ def wrds(userId,curBook,ed=False,lastMsg=None,prevLastWord = -1):
         if len(wordButtons) >= 6:
             isBreak = True
             break
-        lastWord = word.ident + 1
+        prevLastWord = word.ident
         wordButtons.update({word.word:json.dumps({'addword':word.ident})})
-    if isBreak:
-        controlButtons.update({'>':{'show':{'book':lastWord}}})
     controlButtons.update({'>>':{'show':{'nextBook':0}}})
+    if startWord != book.firstLastWord['start']:
+        controlButtons.update({'<':{'show':{'book':startWord}}})
+    if isBreak:
+        controlButtons.update({'>':{'show':{'book':prevLastWord+1}}})
     buttons = [wordButtons,controlButtons]
     if ed:
         post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=3)
