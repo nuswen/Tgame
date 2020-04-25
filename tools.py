@@ -30,12 +30,9 @@ def show(userId,commands):
 
 def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
     book = models.book.query.filter_by(ident = curBook).first()
-    print(book.sentence)
-    print(startWord)
 
     if startWord<0:
         startWord = book.firstLastWord['start']
-        print(startWord)
     
     words = models.words.query.filter(models.words.ident >= startWord, 
                                         models.words.ident <= book.firstLastWord['end']).all()
@@ -43,7 +40,6 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
     controlButtons = {}
     isBreak = False
     for word in words:
-        print(wordButtons)
         if wordButtons.get(word.word):
             isBreak = True
             break
@@ -54,9 +50,12 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
         wordButtons.update({word.word:json.dumps({'addword':word.ident})})
     controlButtons.update({'>>':{'show':{'nextBook':0}}})
     if startWord != book.firstLastWord['start']:
+        print('startWord')
         print(startWord)
         controlButtons.update({'<':{'show':{'book':startWord}}})
     if isBreak:
+        print('prevLastWord')
+        print(prevLastWord)
         controlButtons.update({'>':{'show':{'book':prevLastWord+1}}})
     buttons = [wordButtons,controlButtons]
     if ed:
@@ -115,7 +114,6 @@ def storyUp(idFileStory):
     telePath = requests.get('https://api.telegram.org/bot'+environ['token']+'/getFile?file_id='+idFileStory)
     jTelePath = json.loads(telePath.text)
     pathFile = jTelePath['result']['file_path']
-    print (pathFile)
     if pathFile[-4:] == '.csv':
         path = 'https://api.telegram.org/file/bot'+environ['token']+'/'
         csvStream = requests.get(path+pathFile,stream = True)
@@ -129,7 +127,6 @@ def storyUp(idFileStory):
             ident,message,answers,link,timeout,branch,photo,audio,speclink,doc = row
 
             ident = _tryInt(ident)
-            print(ident)
 
             if answers and not answers.isspace():
                 answers = json.loads(answers)
@@ -184,7 +181,6 @@ def storyGo(userId,answer = None, link=None):
         
         #TODO ловить ответы не по сценарию и отправлять ответ из списка
         if not newStoryRow:
-            print('не')
             return '5'
         ts = int(datetime.timestamp(datetime.utcnow()))
         user.point = newStoryRow.ident
@@ -200,7 +196,6 @@ def storyGo(userId,answer = None, link=None):
             betweenBranch = True
         if newStoryRow.speclink:
             for i in newStoryRow.speclink:
-                print(i)
                 if i == "tag":
                     if newStoryRow.speclink[i] == "affront":
                         affront = True
