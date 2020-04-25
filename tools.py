@@ -24,19 +24,20 @@ def show(userId,commands):
             user.curSentence = user.curSentence + 1
             post = sentence(user)
         elif command == 'sentence':
-            post = sentence(user,ed=True,lastMsg=user.lastMsgId, startWord=commands[command])
+            post = sentence(user,ed=True, startWord=commands[command])
         user.lastMsgId = post.message_id
         db.session.commit()
     
 def addWord(userId,commands):
     user = models.telegram_users.query.filter_by(userId = userId).first()
-    print(user.words)
-    user.words.update({commands['word']:0})
-    print(user.words)
+    words = user.words
+    words.update({commands['word']:0})
+    print(words)
+    user.words = words
     db.session.commit()
-    sentence(user,ed=True,lastMsg=user.lastMsgId,startWord=commands['startWord'])
+    sentence(user,ed=True,startWord=commands['startWord'])
         
-def sentence(user,ed=False,lastMsg=None,startWord = -1):
+def sentence(user,ed=False,startWord = -1):
     book = models.book.query.filter_by(ident = user.curSentence).first()
     if startWord<0:
         startWord = book.firstLastWord['start']
@@ -63,7 +64,7 @@ def sentence(user,ed=False,lastMsg=None,startWord = -1):
         controlButtons.update({'>':{'show':{'sentence':prevLastWord+1}}})
     buttons = [wordButtons,controlButtons]
     if ed:
-        post = poster(bot,user.userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=wordsInRow)
+        post = poster(bot,user.userId,book.sentence,buttons=buttons,ed=ed,message_id=user.lastMsgId,lenRow=wordsInRow)
     else:
         post = poster(bot,user.userId,book.sentence,buttons=buttons,lenRow=wordsInRow)
     return post
