@@ -31,3 +31,5 @@ def callback_inline(call):
     for command in commands:
         if command == 'show':
             show(call.message.chat.id,commands[command])
+        elif command == 'addWord':
+            addWord(call.message.chat.id,commands[command])

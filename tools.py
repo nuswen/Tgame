@@ -22,14 +22,20 @@ def show(userId,commands):
                 post = poster(bot,userId,msg.message,buttons=msg.buttons) 
         elif command == 'nextSentence':
             user.curSentence = user.curSentence + 1
-            post = sentence(userId,user.curSentence)
+            post = sentence(user)
         elif command == 'sentence':
-            post = sentence(userId,user.curSentence,ed=True,lastMsg=user.lastMsgId, startWord=commands[command])
+            post = sentence(user,ed=True,lastMsg=user.lastMsgId, startWord=commands[command])
         user.lastMsgId = post.message_id
         db.session.commit()
-
-def sentence(userId,curSentence,ed=False,lastMsg=None,startWord = -1):
-    book = models.book.query.filter_by(ident = curSentence).first()
+    
+def addWord(userId,commands):
+    user = models.telegram_users.query.filter_by(userId = userId).first()
+    user.words.update({commands['word']:0})
+    db.session.commit()
+    sentence(user,ed=True,lastMsg=user.lastMsgId,startWord=commands['startWord'])
+        
+def sentence(user,ed=False,lastMsg=None,startWord = -1):
+    book = models.book.query.filter_by(ident = user.curSentence).first()
     if startWord<0:
         startWord = book.firstLastWord['start']
     words = models.words.query.filter(models.words.ident >= startWord, 
@@ -38,6 +44,8 @@ def sentence(userId,curSentence,ed=False,lastMsg=None,startWord = -1):
     controlButtons = {}
     isBreak = False
     for word in words:
+        if word.ident in user.words:
+            continue
         if wordButtons.get(word.word):
             isBreak = True
             break
@@ -45,7 +53,7 @@ def sentence(userId,curSentence,ed=False,lastMsg=None,startWord = -1):
             isBreak = True
             break
         prevLastWord = word.ident
-        wordButtons.update({word.word:json.dumps({'addword':word.ident})})
+        wordButtons.update({word.word:json.dumps({'addWord':{'word':word.ident,'startWord':startWord}})})
     controlButtons.update({'>>':{'show':{'nextSentence':0}}})
     if startWord != book.firstLastWord['start']:
         controlButtons.update({'<':{'show':{'sentence':startWord-wordsAtTime}}})
@@ -53,9 +61,9 @@ def sentence(userId,curSentence,ed=False,lastMsg=None,startWord = -1):
         controlButtons.update({'>':{'show':{'sentence':prevLastWord+1}}})
     buttons = [wordButtons,controlButtons]
     if ed:
-        post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=wordsInRow)
+        post = poster(bot,user.userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=wordsInRow)
     else:
-        post = poster(bot,userId,book.sentence,buttons=buttons,lenRow=wordsInRow)
+        post = poster(bot,user.userId,book.sentence,buttons=buttons,lenRow=wordsInRow)
     return post
 
 def start(userId):
@@ -68,6 +76,7 @@ def start(userId):
         ts = int(datetime.timestamp(datetime.utcnow()))
         newUser = models.telegram_users(userId = userId, 
                                         point = startPoint,
+                                        words = json.dumps({}),
                                         lastTime = ts,
                                         refCount = 0,
                                         patron = False,
