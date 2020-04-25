@@ -1,6 +1,5 @@
 from app import db
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.dialects.postgresql import ARRAY
 
 
 class messages(db.Model):
@@ -8,7 +7,6 @@ class messages(db.Model):
     message = db.Column(db.Text)
     buttons = db.Column(JSONB)
     edit = db.Column(db.Boolean)
-    but = db.Column(ARRAY(JSONB))
 
 class book(db.Model):
     ident = db.Column(db.Integer, primary_key=True)
