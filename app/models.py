@@ -32,3 +32,4 @@ class telegram_users(db.Model):
     lastMsgId = db.Column(db.Integer)
     curSentence = db.Column(db.Integer)
     curStBook = db.Column(db.Integer)
+    newWordsTooday = db.Column(db.Integer)

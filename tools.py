@@ -33,6 +33,7 @@ def addWord(userId,commands,callId):
     bot.answer_callback_query(callId, text=pickWordMsg)
     user.words.update({commands['word']:0})
     models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
+    models.telegram_users.query.filter_by(userId = userId).update({'newWordsTooday': user.newWordsTooday +1})
     db.session.commit()
     sentence(user,ed=True,startWord=commands['startWord'])
 def sentence(user,ed=False,startWord = -1):
@@ -84,7 +85,8 @@ def start(userId):
                                         molestTimes = 0,
                                         archive = False,
                                         curSentence = 0,
-                                        curStBook = 0)
+                                        curStBook = 0,
+                                        newWordsTooday = 0)
         db.session.add(newUser)
         db.session.commit()
     commands = {'messages':startTag}
