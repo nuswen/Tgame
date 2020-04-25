@@ -29,6 +29,7 @@ def show(userId,commands):
         db.session.commit()
     
 def addWord(userId,commands):
+    print(commands)
     user = models.telegram_users.query.filter_by(userId = userId).first()
     user.words.update({commands['word']:0})
     db.session.commit()
