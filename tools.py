@@ -41,21 +41,21 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
         if wordButtons.get(word.word):
             isBreak = True
             break
-        if len(wordButtons) >= 6:
+        if len(wordButtons) >= environ['How_much_word_for_once']:
             isBreak = True
             break
         prevLastWord = word.ident
         wordButtons.update({word.word:json.dumps({'addword':word.ident})})
     controlButtons.update({'>>':{'show':{'nextBook':0}}})
     if startWord != book.firstLastWord['start']:
-        controlButtons.update({'<':{'show':{'book':startWord-6}}})
+        controlButtons.update({'<':{'show':{'book':startWord-environ['How_much_word_for_once']}}})
     if isBreak:
         controlButtons.update({'>':{'show':{'book':prevLastWord+1}}})
     buttons = [wordButtons,controlButtons]
     if ed:
-        post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=3)
+        post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=environ['How_much_word_in_row'])
     else:
-        post = poster(bot,userId,book.sentence,buttons=buttons,lenRow=3)
+        post = poster(bot,userId,book.sentence,buttons=buttons,lenRow=environ['How_much_word_in_row'])
     return post
 
 def start(userId):
