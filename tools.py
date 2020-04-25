@@ -22,14 +22,14 @@ def show(userId,commands):
                 post = poster(bot,userId,msg.message,buttons=msg.buttons) 
         elif command == 'nextBook':
             user.curBook = user.curBook + 1
-            post = wrds(userId,user.curBook)
-        elif command == 'book':
-            post = wrds(userId,user.curBook,ed=True,lastMsg=user.lastMsgId, startWord=commands[command])
+            post = sentence(userId,user.curBook)
+        elif command == 'sentence':
+            post = sentence(userId,user.curBook,ed=True,lastMsg=user.lastMsgId, startWord=commands[command])
         user.lastMsgId = post.message_id
         db.session.commit()
 
-def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
-    book = models.book.query.filter_by(ident = curBook).first()
+def sentence(userId,curSentence,ed=False,lastMsg=None,startWord = -1):
+    book = models.book.query.filter_by(ident = curSentence).first()
     if startWord<0:
         startWord = book.firstLastWord['start']
     words = models.words.query.filter(models.words.ident >= startWord, 
@@ -48,9 +48,9 @@ def wrds(userId,curBook,ed=False,lastMsg=None,startWord = -1):
         wordButtons.update({word.word:json.dumps({'addword':word.ident})})
     controlButtons.update({'>>':{'show':{'nextBook':0}}})
     if startWord != book.firstLastWord['start']:
-        controlButtons.update({'<':{'show':{'book':startWord-wordsAtTime}}})
+        controlButtons.update({'<':{'show':{'sentence':startWord-wordsAtTime}}})
     if isBreak:
-        controlButtons.update({'>':{'show':{'book':prevLastWord+1}}})
+        controlButtons.update({'>':{'show':{'sentence':prevLastWord+1}}})
     buttons = [wordButtons,controlButtons]
     if ed:
         post = poster(bot,userId,book.sentence,buttons=buttons,ed=ed,message_id=lastMsg,lenRow=wordsInRow)
