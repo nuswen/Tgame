@@ -28,9 +28,9 @@ def show(userId,commands):
         user.lastMsgId = post.message_id
         db.session.commit()
     
-def addWord(userId,commands):
+def addWord(userId,commands,callId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
-    #bot.answer_callback_query(call.id, text="Дата выбрана")
+    bot.answer_callback_query(callId, text="Дата выбрана")
     user.words.update({commands['word']:0})
     models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
     db.session.commit()
