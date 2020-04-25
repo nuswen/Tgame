@@ -7,11 +7,7 @@ import json
 def poster(bot, chatId, text=None, buttons=None, lenRow=None, ed=False, message_id=None, doc=None, img=None):
     if buttons:
         if ed and not img and not doc:
-            print(chatId)
-            print(message_id)
-            print(text)
-            print(buttons)
-
+            print('post')
             post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
         else:
             if img:
@@ -44,7 +40,6 @@ def inlineKeyboarder(rows, lenRow=None):
         rowCount = len(keysRows)-1
         for key in row:
             keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(row[key])))
-        print (keysRows)
     
     for row in keysRows:
         if len(row) == 1:
