@@ -35,10 +35,10 @@ def addWord(userId,commands):
     user = models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
     #user.words = temp
     db.session.commit()
+    print(user)
     sentence(user,ed=True,startWord=commands['startWord'])
         
 def sentence(user,ed=False,startWord = -1):
-    print(user)
     book = models.book.query.filter_by(ident = user.curSentence).first()
     if startWord<0:
         startWord = book.firstLastWord['start']
