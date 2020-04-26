@@ -84,7 +84,7 @@ def start(userId):
                                         archive = False,
                                         curSentence = 0,
                                         curStBook = 0,
-                                        newWordsTooday = 0)
+                                        newWordsToday = 0)
         db.session.add(newUser)
         db.session.commit()
     commands = {'messages':startTag}
