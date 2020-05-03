@@ -30,8 +30,8 @@ def show(userId,commands):
 def addWord(userId,commands,callId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     bot.answer_callback_query(callId, text=pickWordMsg)
-    user.words.update({int(commands['word']):0})
-    models.telegram_users.query.filter_by(userId = userId).update({'words': {1:1}})
+    user.words.update({commands['word']:0})
+    models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
     models.telegram_users.query.filter_by(userId = userId).update({'newWordsToday': user.newWordsToday +1})
     db.session.commit()
     sentence(user,ed=True,startWord=commands['startWord'])
@@ -45,8 +45,6 @@ def sentence(user,ed=False,startWord = -1):
     controlButtons = {}
     isBreak = False
     for word in words:
-        if str(word.ident) in user.words:
-            continue
         if wordButtons.get(word.word):
             isBreak = True
             break
@@ -54,7 +52,10 @@ def sentence(user,ed=False,startWord = -1):
             isBreak = True
             break
         prevLastWord = word.ident
-        wordButtons.update({word.word:{'addWord':{'word':word.ident,'startWord':startWord}}})
+        if str(word.ident) in user.words:
+            wordButtons.update({word.translate:{'nothing':'nothing'}})
+        else:
+            wordButtons.update({word.word:{'addWord':{'word':word.ident,'startWord':startWord}}})
     controlButtons.update({'>>':{'show':{'nextSentence':0}}})
     if startWord != book.firstLastWord['start']:
         controlButtons.update({'<':{'show':{'sentence':startWord-wordsAtTime}}})
