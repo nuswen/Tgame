@@ -76,7 +76,7 @@ def start(userId):
         ts = int(datetime.timestamp(datetime.utcnow()))
         newUser = models.telegram_users(userId = userId, 
                                         point = startPoint,
-                                        words = json.dumps({}),
+                                        words = {},
                                         lastTime = ts,
                                         refCount = 0,
                                         patron = False,
