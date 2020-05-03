@@ -30,7 +30,7 @@ def show(userId,commands):
 def addWord(userId,commands,callId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     bot.answer_callback_query(callId, text=pickWordMsg)
-    user.words.update({commands['word']:0})
+    user.words.update(int({commands['word']):0})
     models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
     models.telegram_users.query.filter_by(userId = userId).update({'newWordsToday': user.newWordsToday +1})
     db.session.commit()
