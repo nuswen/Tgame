@@ -117,6 +117,7 @@ def wordTeacher(userId):
         else:
             msg.append(word.word)
     msg = ' '.join(msg)
+    print(user.inLesson)
     db.session.commit()
     post = poster(bot,userId,msg) 
 
