@@ -28,6 +28,7 @@ def show(userId,commands):
         elif command == 'nextWord':
             post = wordTeacher(user.userId,ed=True, message_id=user.lastMsgId)
         user.lastMsgId = post.message_id
+        print(user.lastMsgId)
         db.session.commit()
 def addWord(userId,commands,callId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
