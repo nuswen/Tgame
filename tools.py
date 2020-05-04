@@ -114,6 +114,7 @@ def wordTeacher(userId):
             user.inLesson.append(wordNum)
             words.append(word.word)
     buttons.append(butWords)
+    print(sentenceNum)
     if not sentenceNum:
         return 'end'
 
