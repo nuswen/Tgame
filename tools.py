@@ -27,7 +27,8 @@ def show(userId,commands):
             post = sentence(user,ed=True, startWord=commands[command])
         elif command == 'nextWord':
             post = wordTeacher(user.userId)
-        user.lastMsgId = post.message_id
+        if type(post) is not 'str':
+            user.lastMsgId = post.message_id
         db.session.commit()
 def addWord(userId,commands,callId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
@@ -107,7 +108,7 @@ def wordTeacher(userId):
             wordsNum.append(int(wordNum))
             user.inLesson.append(wordNum)
             words.append(word.word)
-            butWords.update({word.word:{'flashTrns':{'id':word.ident}}})
+            butWords.update({word.word:{'flashTrns':wordNum}})
             continue
         if wordNum not in user.inLesson and sentenceNum == word.sentence:
             wordsNum.append(int(wordNum))
@@ -129,8 +130,9 @@ def wordTeacher(userId):
     buttons.append({'>>':{'show':{'nextWord':0}}})
     post = poster(bot,user.userId,msg,buttons=buttons) 
     return post
-def flashTrns(userId,commands,callId):
-    bot.answer_callback_query(callId, text=commands)
+def flashTrns(userId,wordNum,callId):
+    word = models.words.query.filter_by(ident = int(wordNum)).first()
+    bot.answer_callback_query(callId, text=word.translate)
 """def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
     tasks = models.waiting.query.all()
