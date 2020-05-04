@@ -25,6 +25,8 @@ def show(userId,commands):
             post = sentence(user)
         elif command == 'sentence':
             post = sentence(user,ed=True, startWord=commands[command])
+        elif command == 'nextWord':
+            post = wordTeacher(user,ed=True, startWord=commands[command])
         user.lastMsgId = post.message_id
         db.session.commit()
 def addWord(userId,commands,callId):
@@ -93,7 +95,8 @@ def start(userId):
     show(userId,commands)
 def wordTeacher(userId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
-    buttons = {'>>':'>>'}
+    buttons = []
+    butWords ={}
     wordsNum = []
     sentenceNum = -1
     words = []
@@ -104,12 +107,16 @@ def wordTeacher(userId):
             wordsNum.append(int(wordNum))
             user.inLesson.append(wordNum)
             words.append(word.word)
+            butWords.update({word.word:{'flashTrns':{'id':word.ident}}})
             continue
         if wordNum not in user.inLesson and sentenceNum == word.sentence:
             wordsNum.append(int(wordNum))
             user.inLesson.append(wordNum)
             words.append(word.word)
-    
+    buttons.append(butWords)
+    if not sentenceNum:
+        return 'end'
+
     book = models.book.query.filter_by(ident = sentenceNum).first()
     msg = book.sentence
     for word in words:
@@ -119,7 +126,9 @@ def wordTeacher(userId):
 
     models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson})
     db.session.commit()
-    post = poster(bot,userId,msg) 
+    buttons.append({'>>':{'show':{'nextWord':0}}})
+    post = poster(bot,userId,msg,buttons=buttons) 
+    return post
 
 """def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
