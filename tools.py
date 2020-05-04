@@ -97,7 +97,7 @@ def wordTeacher(userId):
     wordsNum = []
     sentenceNum = -1
     for wordNum in user.words:
-        word = models.words.query.filter(ident = int(wordNum)).first()
+        word = models.words.query.filter_by(ident = int(wordNum)).first()
         if wordNum not in user.inLesson and sentenceNum == -1:
             sentenceNum = word.sentence
             wordsNum.append(int(wordNum))
