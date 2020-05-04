@@ -114,6 +114,7 @@ def wordTeacher(userId):
             wordsNum.append(int(wordNum))
             user.inLesson.append(wordNum)
             words.append(word.word)
+            butWords.update({word.word:{'flashTrns':wordNum}})
     buttons.append(butWords)
     if sentenceNum==-1:
         return 'end'
