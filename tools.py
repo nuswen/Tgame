@@ -26,7 +26,7 @@ def show(userId,commands):
         elif command == 'sentence':
             post = sentence(user,ed=True, startWord=commands[command])
         elif command == 'nextWord':
-            post = wordTeacher(user.userId)
+            post = wordTeacher(user.userId,user.lastMsgId)
         if type(post) is not 'str':
             user.lastMsgId = post.message_id
         db.session.commit()
@@ -94,7 +94,7 @@ def start(userId):
         db.session.commit()
     commands = {'messages':startTag}
     show(userId,commands)
-def wordTeacher(userId,ed=True):
+def wordTeacher(userId,ed=True,message_id):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     buttons = []
     butWords ={}
@@ -129,7 +129,7 @@ def wordTeacher(userId,ed=True):
     models.telegram_users.query.filter_by(userId = user.userId).update({'inLesson': user.inLesson})
     db.session.commit()
     buttons.append({'>>':{'show':{'nextWord':0}}})
-    post = poster(bot,user.userId,msg,buttons=buttons,ed=ed) 
+    post = poster(bot,user.userId,msg,buttons=buttons,ed=ed,message_id=message_id) 
     return post
 def flashTrns(userId,wordNum,callId):
     word = models.words.query.filter_by(ident = int(wordNum)).first()
