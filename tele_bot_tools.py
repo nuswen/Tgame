@@ -7,24 +7,24 @@ import json
 def poster(bot, chatId, text=None, buttons=None, lenRow=None, ed=False, message_id=None, doc=None, img=None):
     if buttons:
         if ed and not img and not doc:
-            post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, parse_mode="HTML", reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
+            post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, parse_mode="Markdown", reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
         else:
             if img:
-                bot.send_photo(chat_id=chatId, photo=img, parse_mode="HTML", reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
+                bot.send_photo(chat_id=chatId, photo=img, reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
             if doc:
-                bot.send_document(chat_id=chatId, data=doc, parse_mode="HTML", reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
+                bot.send_document(chat_id=chatId, data=doc, reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
             if text:
-                post = bot.send_message(chatId, text, parse_mode="HTML", reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
+                post = bot.send_message(chatId, text, parse_mode="Markdown", reply_markup=inlineKeyboarder(buttons,lenRow=lenRow))
     else:
         if ed and not img and not doc:
-            post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, parse_mode="HTML")
+            post = bot.edit_message_text(chat_id=chatId, message_id=message_id, text=text, parse_mode="Markdown")
         else:
             if img:
                 bot.send_photo(chat_id=chatId, photo=img)
             if doc:
                 bot.send_document(chat_id=chatId, data=doc)
             if text:
-                post = bot.send_message(chatId, text)
+                post = bot.send_message(chatId, text, parse_mode="Markdown")
     return post
 
 def inlineKeyboarder(rows, lenRow=None):
