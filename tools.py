@@ -105,7 +105,6 @@ def wordTeacher(userId):
             wordsNum.append(int(wordNum))
     
     book = models.book.query.filter_by(ident = sentenceNum).first()
-        startWord = book.firstLastWord['start']
     words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
                                         models.words.ident <= book.firstLastWord['end']).all()
     msg = []
