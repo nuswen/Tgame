@@ -26,7 +26,7 @@ def show(userId,commands):
         elif command == 'sentence':
             post = sentence(user,ed=True, startWord=commands[command])
         elif command == 'nextWord':
-            post = wordTeacher(user,ed=True, startWord=commands[command])
+            post = wordTeacher(user)
         user.lastMsgId = post.message_id
         db.session.commit()
 def addWord(userId,commands,callId):
@@ -93,8 +93,7 @@ def start(userId):
         db.session.commit()
     commands = {'messages':startTag}
     show(userId,commands)
-def wordTeacher(userId):
-    user = models.telegram_users.query.filter_by(userId = userId).first()
+def wordTeacher(user):
     buttons = []
     butWords ={}
     wordsNum = []
@@ -124,12 +123,13 @@ def wordTeacher(userId):
         for i in range(0,len(spltmsg)-1,2):
             msg = spltmsg[i] + '*'+word+'*'+spltmsg[i+1]
 
-    models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson})
+    models.telegram_users.query.filter_by(userId = user.userId).update({'inLesson': user.inLesson})
     db.session.commit()
     buttons.append({'>>':{'show':{'nextWord':0}}})
-    post = poster(bot,userId,msg,buttons=buttons) 
+    post = poster(bot,user.userId,msg,buttons=buttons) 
     return post
-
+def flashTrns(userId,commands,callId):
+    bot.answer_callback_query(callId, text=commands)
 """def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
     tasks = models.waiting.query.all()

@@ -17,6 +17,10 @@ def hi_msg(msg):
 def words(msg):
     print(wordTeacher(msg.chat.id))
 
+@bot.message_handler(commands=['words'])
+def words(msg):
+    print(wordTeacher(msg.chat.id))
+
 @bot.message_handler(content_types=['text'])
 def text(msg):
     pass
@@ -38,3 +42,6 @@ def callback_inline(call):
             show(call.message.chat.id,commands[command])
         elif command == 'addWord':
             addWord(call.message.chat.id,commands[command],call.id)
+        elif command == 'flashTrns':
+            flashTrns(call.message.chat.id,commands[command],call.id)
+            
