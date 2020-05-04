@@ -27,6 +27,8 @@ def show(userId,commands):
             post = sentence(user,ed=True, startWord=commands[command])
         elif command == 'nextWord':
             post = wordTeacher(user.userId,ed=True, message_id=user.lastMsgId)
+            print('tut')
+        print('hoh')
         user.lastMsgId = post.message_id
         print('show')
         print(user.lastMsgId)
