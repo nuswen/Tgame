@@ -100,14 +100,14 @@ def wordTeacher(userId):
         word = models.words.query.filter_by(ident = int(wordNum)).first()
         if wordNum not in user.inLesson and sentence == -1:
             sentence = word.sentence
-            words.append(word)
+            words.append(word.word)
             continue
         if wordNum not in user.inLesson and sentence == word.sentence:
             words.append(word)
     print(words)
 
 
-    post = poster(bot,userId,msg.message,buttons=msg.buttons) 
+    #post = poster(bot,userId,msg.message,buttons=msg.buttons) 
 
 """def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
