@@ -94,7 +94,7 @@ def start(userId):
         db.session.commit()
     commands = {'messages':startTag}
     show(userId,commands)
-def wordTeacher(userId,ed=Flase,message_id=None):
+def wordTeacher(userId,ed=False,message_id=None):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     buttons = []
     butWords ={}
