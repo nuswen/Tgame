@@ -96,27 +96,27 @@ def wordTeacher(userId):
     buttons = {'>>':'>>'}
     wordsNum = []
     sentenceNum = -1
+    words = []
     for wordNum in user.words:
         word = models.words.query.filter_by(ident = int(wordNum)).first()
         if wordNum not in user.inLesson and sentenceNum == -1:
             sentenceNum = word.sentence
             wordsNum.append(int(wordNum))
             user.inLesson.append(wordNum)
+            words.append(word.word)
             continue
         if wordNum not in user.inLesson and sentenceNum == word.sentence:
             wordsNum.append(int(wordNum))
             user.inLesson.append(wordNum)
+            words.append(word.word)
     
     book = models.book.query.filter_by(ident = sentenceNum).first()
-    words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
-                                        models.words.ident <= book.firstLastWord['end']).all()
-    msg = []
+    msg = book.sentence
     for word in words:
-        if word.ident in wordsNum:
-            msg.append('*'+word.word+'*')
-        else:
-            msg.append(word.word)
-    msg = ' '.join(msg)
+        spltmsg = msg.split(word)
+        for i in range(0,len(spltmsg)-1,2):
+            msg = spltmsg[i] + '*'+word+'*'+spltmsg[i+1]
+
     models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson})
     db.session.commit()
     post = poster(bot,userId,msg) 
