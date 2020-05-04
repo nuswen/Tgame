@@ -28,6 +28,7 @@ def show(userId,commands):
         elif command == 'nextWord':
             post = wordTeacher(user.userId,ed=True, message_id=user.lastMsgId)
         user.lastMsgId = post.message_id
+        print('show')
         print(user.lastMsgId)
         db.session.commit()
 def addWord(userId,commands,callId):
@@ -128,6 +129,8 @@ def wordTeacher(userId,ed=False,message_id=None):
     db.session.commit()
     buttons = [butWords,{'>>':{'show':{'nextWord':0}}}]
     post = poster(bot,userId,msg,buttons=buttons,ed=ed,message_id=message_id) 
+    print('wordTeacher')
+    print(post)
     return post
 def flashTrns(userId,wordNum,callId):
     word = models.words.query.filter_by(ident = int(wordNum)).first()
