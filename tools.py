@@ -94,7 +94,7 @@ def start(userId):
         db.session.commit()
     commands = {'messages':startTag}
     show(userId,commands)
-def wordTeacher(userId):
+def wordTeacher(userId,ed=True):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     buttons = []
     butWords ={}
@@ -129,7 +129,7 @@ def wordTeacher(userId):
     models.telegram_users.query.filter_by(userId = user.userId).update({'inLesson': user.inLesson})
     db.session.commit()
     buttons.append({'>>':{'show':{'nextWord':0}}})
-    post = poster(bot,user.userId,msg,buttons=buttons) 
+    post = poster(bot,user.userId,msg,buttons=buttons,ed=ed) 
     return post
 def flashTrns(userId,wordNum,callId):
     word = models.words.query.filter_by(ident = int(wordNum)).first()

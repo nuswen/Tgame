@@ -15,7 +15,7 @@ def hi_msg(msg):
 
 @bot.message_handler(commands=['words'])
 def words(msg):
-    print(wordTeacher(msg.chat.id))
+    print(wordTeacher(msg.chat.id,ed=False))
 
 @bot.message_handler(commands=['words'])
 def words(msg):
