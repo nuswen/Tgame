@@ -126,8 +126,8 @@ def wordTeacher(userId,ed=False,message_id=None):
 
     models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson})
     db.session.commit()
-    buttons[butWords,{'>>':{'show':{'nextWord':0}}}]
-    post = poster(bot,userId,msg,buttons=buttons,ed=ed,message_id=message_id) 
+    buttons = [butWords,{'>>':{'show':{'nextWord':0}}}]
+    post = poster(bot,userId,msg,buttons=buttons) 
     return post
 def flashTrns(userId,wordNum,callId):
     word = models.words.query.filter_by(ident = int(wordNum)).first()
