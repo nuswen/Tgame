@@ -114,8 +114,7 @@ def wordTeacher(userId):
             user.inLesson.append(wordNum)
             words.append(word.word)
     buttons.append(butWords)
-    print(sentenceNum)
-    if not sentenceNum:
+    if sentenceNum==-1:
         return 'end'
 
     book = models.book.query.filter_by(ident = sentenceNum).first()
