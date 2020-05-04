@@ -26,7 +26,7 @@ def show(userId,commands):
         elif command == 'sentence':
             post = sentence(user,ed=True, startWord=commands[command])
         elif command == 'nextWord':
-            post = wordTeacher(user)
+            post = wordTeacher(user.userId)
         user.lastMsgId = post.message_id
         db.session.commit()
 def addWord(userId,commands,callId):
@@ -93,7 +93,8 @@ def start(userId):
         db.session.commit()
     commands = {'messages':startTag}
     show(userId,commands)
-def wordTeacher(user):
+def wordTeacher(userId):
+    user = models.telegram_users.query.filter_by(userId = userId).first()
     buttons = []
     butWords ={}
     wordsNum = []
