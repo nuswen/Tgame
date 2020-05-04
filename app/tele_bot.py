@@ -13,6 +13,10 @@ from os import environ
 def hi_msg(msg):
     start(msg.chat.id)
 
+@bot.message_handler(commands=['words'])
+def words(msg):
+    wordTeacher(msg.chat.id)
+
 @bot.message_handler(content_types=['text'])
 def text(msg):
     pass

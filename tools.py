@@ -85,12 +85,29 @@ def start(userId):
                                         archive = False,
                                         curSentence = 0,
                                         curStBook = 0,
-                                        newWordsToday = 0)
+                                        newWordsToday = 0,
+                                        inLesson = [])
         db.session.add(newUser)
         db.session.commit()
     commands = {'messages':startTag}
     show(userId,commands)
+def wordTeacher(userId):
+    user = models.telegram_users.query.filter_by(userId = userId).first()
+    buttons = {'>>':'>>'}
+    words = []
+    sentence = -1
+    for wordNum in user.words:
+        word = models.words.query.filter_by(ident = int(wordNum)).first()
+        if wordNum not in user.inLesson and sentence == -1:
+            sentence = word.sentence
+            words.append(word)
+            continue
+        if wordNum not in user.inLesson and sentence == word.sentence:
+            words.append(word)
+    print(words)
 
+
+    post = poster(bot,userId,msg.message,buttons=msg.buttons) 
 
 """def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))

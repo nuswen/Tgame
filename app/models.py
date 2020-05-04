@@ -1,5 +1,6 @@
 from app import db
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import ARRAY
 
 
 class messages(db.Model):
@@ -33,3 +34,4 @@ class telegram_users(db.Model):
     curSentence = db.Column(db.Integer)
     curStBook = db.Column(db.Integer)
     newWordsToday = db.Column(db.Integer)
+    inLesson = db.Column(ARRAY(db.Text))
