@@ -26,12 +26,8 @@ def show(userId,commands):
         elif command == 'sentence':
             post = sentence(user,ed=True, startWord=commands[command])
         elif command == 'nextWord':
-            post = wordTeacher(user.userId,ed=True, message_id=user.lastMsgId)
-            print('tut')
-        print('hoh')
+            post = wordTeacher(user.userId,ed=bool(commands[command]['ed']), message_id=user.lastMsgId)
         user.lastMsgId = post.message_id
-        print('show')
-        print(user.lastMsgId)
         db.session.commit()
 def addWord(userId,commands,callId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
@@ -129,7 +125,7 @@ def wordTeacher(userId,ed=False,message_id=None):
 
     models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson})
     db.session.commit()
-    buttons = [butWords,{'>>':{'show':{'nextWord':0}}}]
+    buttons = [butWords,{'>>':{'show':{'nextWord':{'ed':True}}}]
     post = poster(bot,userId,msg,buttons=buttons,ed=ed,message_id=message_id) 
     print('wordTeacher')
     print(post)

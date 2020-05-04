@@ -15,7 +15,7 @@ def hi_msg(msg):
 
 @bot.message_handler(commands=['words'])
 def words(msg):
-    wordTeacher(msg.chat.id)
+    show(msg.chat.id,{'nextWord':{'ed':False}})
 
 @bot.message_handler(commands=['words'])
 def words(msg):
