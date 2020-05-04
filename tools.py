@@ -95,19 +95,18 @@ def wordTeacher(userId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     buttons = {'>>':'>>'}
     words = []
-    sentence = -1
+    sentenceNum = -1
     for wordNum in user.words:
         word = models.words.query.filter_by(ident = int(wordNum)).first()
-        if wordNum not in user.inLesson and sentence == -1:
-            sentence = word.sentence
-            words.append(word.word)
-            continue
-        if wordNum not in user.inLesson and sentence == word.sentence:
+        if wordNum not in user.inLesson and sentenceNum == -1:
+            sentenceNum = word.sentence
             words.append(word)
-    print(words)
-
-
-    #post = poster(bot,userId,msg.message,buttons=msg.buttons) 
+            continue
+        if wordNum not in user.inLesson and sentenceNum == word.sentence:
+            words.append(word)
+    
+    sentence = models.book.query.filter_by(ident = sentenceNum).first()
+    post = poster(bot,userId,sentence.sentence) 
 
 """def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
