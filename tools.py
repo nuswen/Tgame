@@ -101,9 +101,11 @@ def wordTeacher(userId):
         if wordNum not in user.inLesson and sentenceNum == -1:
             sentenceNum = word.sentence
             wordsNum.append(int(wordNum))
+            user.inLesson.append(wordNum)
             continue
         if wordNum not in user.inLesson and sentenceNum == word.sentence:
             wordsNum.append(int(wordNum))
+            user.inLesson.append(wordNum)
     
     book = models.book.query.filter_by(ident = sentenceNum).first()
     words = models.words.query.filter(models.words.ident >= book.firstLastWord['start'], 
@@ -115,6 +117,7 @@ def wordTeacher(userId):
         else:
             msg.append(word.word)
     msg = ' '.join(msg)
+    db.session.commit()
     post = poster(bot,userId,msg) 
 
 """def checkTask():
