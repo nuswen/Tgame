@@ -117,7 +117,7 @@ def wordTeacher(userId):
         else:
             msg.append(word.word)
     msg = ' '.join(msg)
-    print(user.inLesson)
+    models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson})
     db.session.commit()
     post = poster(bot,userId,msg) 
 
