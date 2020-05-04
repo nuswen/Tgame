@@ -111,7 +111,7 @@ def wordTeacher(userId):
     msg = []
     for word in words:
         if word.ident in wordsNum:
-            msg.append('<b>'+word.word+'</b>')
+            msg.append('*'+word.word+'*')
         else:
             msg.append(word.word)
     msg = ' '.join(msg)
