@@ -256,7 +256,7 @@ def ref(userId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     text = 'Текст сообщения'
     buttonText = 'поделись'
-    shareUrl = 'https://t.me/share/url?url=https://bit.ly/2xDJgJS')
+    shareUrl = 'https://t.me/share/url?url=https://bit.ly/2xDJgJS'
     #shareUrl = 'https://t.me/share/url?url=https://t.me/{botName}?start={sharePoint}&text={textForShare}'.format(botName=environ['botName'], sharePoint=str(user.userId),textForShare = 'Гля')
     print(shareUrl)
     poster(bot,userId,text=text,buttons=[{buttonText:shareUrl}],inline=True)
