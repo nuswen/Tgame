@@ -16,6 +16,7 @@ def refmsg(msg):
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
+    print(msg)
     start(msg.chat.id)
     storyGo(msg.chat.id)
 
