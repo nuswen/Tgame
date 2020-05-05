@@ -34,7 +34,7 @@ def keyboarder(keys,inline,lenRow):
         return clasicKeyboarder(keys)
 
 def isUrl(text):
-    regex = re.compile(r'^(?:http|ftp)s?://' , re.IGNORECASE)
+    regex = re.compile(r'^(http)s?://', re.IGNORECASE)
     print(re.match(regex, text) is not None)
     return re.match(regex, text) is not None
 
