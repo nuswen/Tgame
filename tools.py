@@ -251,3 +251,8 @@ def molest():
             
     db.session.commit()
     time.sleep(10)
+
+def ref(userId):
+    poster(bot,userId,text='поделись')
+    
+    #https://telegram.me/share/url?url=(ссылка)&text=(описание)

@@ -10,6 +10,9 @@ from time import sleep
 from os import environ
 
 
+@bot.message_handler(commands=['ref'])
+def refmsg(msg):
+    ref(msg.chat.id)
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
