@@ -49,6 +49,7 @@ class waiting(db.Model):
     link = db.Column(db.Integer)
     betweenBranch = db.Column(db.Boolean)
     affront = db.Column(db.Boolean)
+    stopShare = db.Column(db.Integer)
 
 class spec_answ(db.Model):
     ident = db.Column(db.Integer, primary_key=True)

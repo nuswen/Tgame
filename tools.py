@@ -143,6 +143,8 @@ def storyGo(userId,answer = None, link=None):
         user.lastTime = ts
         betweenBranch = False
         affront = False
+        needRef = 0
+
         if user.curBranch != newStoryRow.branch:
             newBranchTime = json.loads(user.branchTime)
             newBranchTime[user.curBranch].update({'end':ts})
@@ -152,18 +154,21 @@ def storyGo(userId,answer = None, link=None):
             betweenBranch = True
         if newStoryRow.speclink:
             for i in newStoryRow.speclink:
-                print(i)
                 if i == "tag":
                     if newStoryRow.speclink[i] == "affront":
                         affront = True
+                elif  i == "stopShare":
+                    needRef = int(newStoryRow.speclink[i])
+                    
         user.curBranch = newStoryRow.branch
         if newStoryRow.timeout:
             timeout = ts+newStoryRow.timeout
         else:
             timeout = ts + int(environ['std_timeout'])
         
+        shareUrl = 'https://t.me/{botName}?start={sharePoint}'.format(botName=environ['botName'], sharePoint=str(user.userId))
         newTask = models.waiting(userId = userId, 
-                                message = newStoryRow.message,
+                                message = newStoryRow.message.format(shareUrl=shareUrl),
                                 answers = newStoryRow.answers,
                                 doc = newStoryRow.doc,
                                 image = newStoryRow.photo,
@@ -171,7 +176,8 @@ def storyGo(userId,answer = None, link=None):
                                 time = timeout,
                                 link = newStoryRow.link,
                                 betweenBranch = betweenBranch,
-                                affront = affront)
+                                affront = affront,
+                                stopShare = needRef)
         db.session.add(newTask)
         db.session.commit()   
         return newStoryRow     
@@ -182,6 +188,14 @@ def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
     tasks = models.waiting.query.all()
     for task in tasks:
+        if task.stopShare != 0:
+            user = models.telegram_users.query.filter_by(userId = task.userId).first()
+            if user.refCount>=task.stopShare:
+                poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
+                db.session.delete(task)
+                db.session.commit() 
+                storyGo(task.userId,link=task.link)
+            continue
         if task.time<=ts:
             if task.link:
                 poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
@@ -252,12 +266,12 @@ def molest():
     db.session.commit()
     time.sleep(10)
 
-def ref(userId):
+def stopShare(userId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     text = 'Текст сообщения'
     buttonText = 'поделись'
     shareUrl = 'https://t.me/share/url?url=https://bit.ly/2xDJgJS'
-    #shareUrl = 'https://t.me/share/url?url=https://t.me/{botName}?start={sharePoint}&text={textForShare}'.format(botName=environ['botName'], sharePoint=str(user.userId),textForShare = 'Гля')
+    #shareUrl = 'https://t.me/{botName}?start={sharePoint}&text={textForShare}'.format(botName=environ['botName'], sharePoint=str(user.userId),textForShare = 'Гля')
     print(shareUrl)
     poster(bot,userId,text=text,buttons=[{buttonText:shareUrl}],inline=True)
     

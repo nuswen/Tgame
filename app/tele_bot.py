@@ -20,8 +20,6 @@ def hi_msg(msg):
     start(msg.chat.id)
     storyGo(msg.chat.id)
 
-
-
 @bot.message_handler(content_types=['text'])
 def text(msg):
     storyGo(msg.chat.id,answer=msg.text)
