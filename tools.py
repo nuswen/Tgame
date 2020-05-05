@@ -254,7 +254,8 @@ def molest():
 
 def ref(userId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
-    text = 'поделись'
-    shareUrl = 'https://t.me/share/url?url=https://t.me/{botName}?start={sharePoint}&text={textForShare}'.format(botName=environ['botName'], sharePoint=str(user.userId),textForShare = 'Гля')
+    text = 'Текст сообщения'
+    buttonText = 'поделись'
+    shareUrl = 'https://t.me/share/url?url=(https://t.me/{botName}?start={sharePoint})&text=({textForShare})'.format(botName=environ['botName'], sharePoint=str(user.userId),textForShare = 'Гля')
     print(shareUrl)
-    poster(bot,userId,text='поделись',buttons=[{text:shareUrl}],inline=True)
+    poster(bot,userId,text=text,buttons=[{text:shareUrl}],inline=True)
