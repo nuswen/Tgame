@@ -34,7 +34,11 @@ def keyboarder(keys,inline,lenRow):
         return clasicKeyboarder(keys)
 
 def isUrl(text):
-    regex = re.compile(r'^(http)s?://', re.IGNORECASE)
+    text = 'http://telegram.me/share/url?url=https://telegram.me'
+    regex = re.compile(
+        r'^(?:http|ftp)s?://' # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', re.IGNORECASE)
     print(re.match(regex, text) is not None)
     return re.match(regex, text) is not None
 
