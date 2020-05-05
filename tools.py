@@ -166,9 +166,13 @@ def storyGo(userId,answer = None, link=None):
         else:
             timeout = ts + int(environ['std_timeout'])
         
-        shareUrl = 'https://t.me/{botName}?start={sharePoint}'.format(botName=environ['botName'], sharePoint=str(user.userId))
+        msg = newStoryRow.message
+        if 'shareUrl' in newStoryRow.message:
+            shareUrl = 'https://t.me/{botName}?start={sharePoint}'.format(botName=environ['botName'], sharePoint=str(user.userId))
+            msg = newStoryRow.message.format(shareUrl=shareUrl)
+            
         newTask = models.waiting(userId = userId, 
-                                message = newStoryRow.message.format(shareUrl=shareUrl),
+                                message = msg,
                                 answers = newStoryRow.answers,
                                 doc = newStoryRow.doc,
                                 image = newStoryRow.photo,
