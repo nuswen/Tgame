@@ -253,6 +253,6 @@ def molest():
     time.sleep(10)
 
 def ref(userId):
-    poster(bot,userId,text='поделись',buttons=[{'Кнопка':'https://telegram.me/share/url?url=https://telegram.me'}],inline=True)
+    poster(bot,userId,text='поделись',buttons=[{'просто':'10'},{'Кнопка':'https://telegram.me/share/url?url=https://telegram.me'}],inline=True)
     
     #https://telegram.me/share/url?url=(ссылка)&text=(описание)

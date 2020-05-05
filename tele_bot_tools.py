@@ -2,6 +2,7 @@ from telebot import types
 from app import models
 from app import db
 import json
+import re
 
 
 def poster(bot, chatId, text=None, buttons=None, ed=False, message_id=None, doc=None, img=None,inline=False,lenRow=None):
@@ -32,6 +33,13 @@ def keyboarder(keys,inline,lenRow):
     else: 
         return clasicKeyboarder(keys)
 
+def isUrl(text):
+    regex = re.compile(
+        r'^(?:http|ftp)s?://' # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', re.IGNORECASE)
+    return re.match(regex, text) is not None
+
 def inlineKeyboarder(rows, lenRow=None):
     if not lenRow: lenRow=10
     keyboard = types.InlineKeyboardMarkup()
@@ -43,7 +51,11 @@ def inlineKeyboarder(rows, lenRow=None):
         keysRows.append([])
         rowCount = len(keysRows)-1
         for key in row:
-            keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=json.dumps(row[key])))
+            keyValue = json.dumps(row[key])
+            if isUrl(keyValue):
+                keysRows[rowCount].append(types.InlineKeyboardButton(text=key, url=keyValue))
+            else:
+                keysRows[rowCount].append(types.InlineKeyboardButton(text=key, callback_data=keyValue))
     
     for row in keysRows:
         if len(row) == 1:
