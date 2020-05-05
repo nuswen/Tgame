@@ -12,7 +12,7 @@ from tele_bot_tools import *
 import random
 
 
-def start(userId):
+def start(userId,startText):
     '''
     Пытается добавить нового юзера в базу - возвращает start если вышло, если юзверь 
     уже есть - continue
@@ -34,7 +34,8 @@ def start(userId):
                                     refCount = 0,
                                     patron = False,
                                     molestTimes = 0)
-    
+    if startText[7:] is not '':
+        addRefCount(int(startText[7:]))
     db.session.add(newUser)
     db.session.commit()
     return "start"
@@ -170,7 +171,7 @@ def storyGo(userId,answer = None, link=None):
         if 'shareUrl' in newStoryRow.message:
             shareUrl = 'https://t.me/{botName}?start={sharePoint}'.format(botName=environ['botName'], sharePoint=str(user.userId))
             msg = newStoryRow.message.format(shareUrl=shareUrl)
-            
+
         newTask = models.waiting(userId = userId, 
                                 message = msg,
                                 answers = newStoryRow.answers,
@@ -275,7 +276,11 @@ def stopShare(userId):
     text = 'Текст сообщения'
     buttonText = 'поделись'
     shareUrl = 'https://t.me/share/url?url=https://bit.ly/2xDJgJS'
-    #shareUrl = 'https://t.me/{botName}?start={sharePoint}&text={textForShare}'.format(botName=environ['botName'], sharePoint=str(user.userId),textForShare = 'Гля')
     print(shareUrl)
     poster(bot,userId,text=text,buttons=[{buttonText:shareUrl}],inline=True)
     
+def addRefCount(userId):
+    user = models.telegram_users.query.filter_by(userId = userId).first()
+    if not user:
+        return
+    user.refCount = user.refCount+1
