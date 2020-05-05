@@ -39,6 +39,7 @@ def isUrl(text):
         r'^(?:http|ftp)s?://' # http:// or https://
         r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
         r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', re.IGNORECASE)
+    print(re.match(regex, text) is not None)
     return re.match(regex, text) is not None
 
 def inlineKeyboarder(rows, lenRow=None):
