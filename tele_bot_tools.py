@@ -52,6 +52,8 @@ def inlineKeyboarder(rows, lenRow=None):
         rowCount = len(keysRows)-1
         for key in row:
             keyValue = json.dumps(row[key])
+            print(keyValue)
+            print(isUrl(keyValue))
             if isUrl(keyValue):
                 keysRows[rowCount].append(types.InlineKeyboardButton(text=key, url=keyValue))
             else:
