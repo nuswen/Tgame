@@ -34,8 +34,6 @@ def keyboarder(keys,inline,lenRow):
         return clasicKeyboarder(keys)
 
 def isUrl(text):
-    print('-'+text+'-')
-
     regex = re.compile(
         r'^(?:http|ftp)s?://' # http:// or https://
         r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
@@ -55,6 +53,7 @@ def inlineKeyboarder(rows, lenRow=None):
         rowCount = len(keysRows)-1
         for key in row:
             keyValue = json.dumps(row[key])
+            keyValue = keyValue.strip('"')
             if isUrl(keyValue):
                 keysRows[rowCount].append(types.InlineKeyboardButton(text=key, url=keyValue))
             else:
