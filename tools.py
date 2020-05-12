@@ -142,6 +142,10 @@ def flashTrns(userId,wordNum,callId):
 def wordEnder(userId,ed=False,message_id=None):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     for wordNum in user.inLesson:
+        print(wordNum)
+        print(user.words[wordNum])
+        print(user.words[wordNum]['sec'])
+        print(user.words[wordNum]['sec']<90)
         if user.words[wordNum]['sec']<90:
             curDate = datetime.strptime(user.words[wordNum]['nextDate'],'%Y-%m-%d')
             user.words[wordNum]['sec'] = user.words[wordNum]['sec'] + 10
