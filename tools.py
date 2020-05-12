@@ -144,12 +144,12 @@ def wordEnder(userId,ed=False,message_id=None):
     for wordNum in user.inLesson:
         print(user.words[wordNum])
         if user.words[wordNum]['sec']<90:
+            curDate = datetime.strptime(user.words[wordNum]['nextDate'],'%Y-%m-%d')
             if user.words[wordNum]['sec']<70:
                 nextDate = curDate + timedelta(days=1)
             else:
                 nextDate = curDate + timedelta(days=14)
             user.words[wordNum]['nextDate'] = str(nextDate.date)
-            curDate = datetime.strptime(user.words[wordNum]['nextDate'],'%Y-%m-%d')
             user.words[wordNum]['sec'] = user.words[wordNum]['sec'] + 10
         elif user.words[wordNum]['sec']>=90:
             user.words.pop(wordNum)
