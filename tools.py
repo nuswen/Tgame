@@ -114,8 +114,7 @@ def wordTeacher(userId,ed=False,message_id=None):
             user.inLesson.append(wordNum)
             words.append(word.word)
             butWords.update({word.word:{'flashTrns':wordNum}})
-    if sentenceNum==-1:
-        return 'end'
+
 
     book = models.book.query.filter_by(ident = sentenceNum).first()
     msg = book.sentence
