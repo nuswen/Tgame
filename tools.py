@@ -153,6 +153,8 @@ def wordEnder(userId,ed=False,message_id=None):
         elif user.words[wordNum]['sec']>=90:
             user.words.pop(wordNum)
     user.inLesson = []
+    models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson,
+                                                                    'words':user.words})
     db.session.commit()
     buttons = [{'Главная кнопка':{'Ничего':1}}]
     post = poster(bot,userId,textWordEnd,buttons=buttons,ed=ed,message_id=message_id) 
