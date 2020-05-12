@@ -142,23 +142,21 @@ def flashTrns(userId,wordNum,callId):
 def wordEnder(userId,ed=False,message_id=None):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     for wordNum in user.inLesson:
-        print(wordNum)
         print(user.words[wordNum])
-        print(user.words[wordNum]['sec'])
-        print(user.words[wordNum]['sec']<90)
         if user.words[wordNum]['sec']<90:
-            curDate = datetime.strptime(user.words[wordNum]['nextDate'],'%Y-%m-%d')
-            user.words[wordNum]['sec'] = user.words[wordNum]['sec'] + 10
             if user.words[wordNum]['sec']<70:
                 nextDate = curDate + timedelta(days=1)
             else:
                 nextDate = curDate + timedelta(days=14)
             user.words[wordNum]['nextDate'] = str(nextDate.date)
+            curDate = datetime.strptime(user.words[wordNum]['nextDate'],'%Y-%m-%d')
+            user.words[wordNum]['sec'] = user.words[wordNum]['sec'] + 10
         elif user.words[wordNum]['sec']>=90:
             user.words.pop(wordNum)
+        print(user.words[wordNum])
     user.inLesson = []
-    models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson,
-                                                                    'words':user.words})
+    #models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson,
+    #                                                                'words':user.words})
     db.session.commit()
     buttons = [{'Главная кнопка':{'Ничего':1}}]
     post = poster(bot,userId,textWordEnd,buttons=buttons,ed=ed,message_id=message_id) 
