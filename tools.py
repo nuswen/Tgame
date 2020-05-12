@@ -114,20 +114,19 @@ def wordTeacher(userId,ed=False,message_id=None):
             user.inLesson.append(wordNum)
             words.append(word.word)
             butWords.update({word.word:{'flashTrns':wordNum}})
-
-
-    book = models.book.query.filter_by(ident = sentenceNum).first()
-    msg = book.sentence
-    for word in words:
-        spltmsg = msg.split(word)
-        for i in range(0,len(spltmsg)-1,2):
-            msg = spltmsg[i] + '*'+word+'*'+spltmsg[i+1]
-
-    models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson})
-    db.session.commit()
     if butWords == {}:
         post = wordEnder(userId,ed=ed,message_id=message_id)
     else:
+        book = models.book.query.filter_by(ident = sentenceNum).first()
+        msg = book.sentence
+        for word in words:
+            spltmsg = msg.split(word)
+            for i in range(0,len(spltmsg)-1,2):
+                msg = spltmsg[i] + '*'+word+'*'+spltmsg[i+1]
+
+        models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson})
+        db.session.commit()
+        
         buttons = [butWords,{'>>':{'show':{'nextWord':{'ed':True}}}}]
         post = poster(bot,userId,msg,buttons=buttons,ed=ed,message_id=message_id) 
     return post
