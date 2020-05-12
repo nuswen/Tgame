@@ -155,7 +155,7 @@ def wordEnder(userId,ed=False,message_id=None):
     user.inLesson = []
     db.session.commit()
     buttons = [{'Главная кнопка':{'Ничего':1}}]
-    post = poster(bot,userId,msg,buttons=buttons,ed=ed,message_id=message_id) 
+    post = poster(bot,userId,textWordEnd,buttons=buttons,ed=ed,message_id=message_id) 
     return post
 
 
