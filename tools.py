@@ -149,14 +149,14 @@ def wordEnder(userId,ed=False,message_id=None):
                 nextDate = curDate + timedelta(days=1)
             else:
                 nextDate = curDate + timedelta(days=14)
-            user.words[wordNum]['nextDate'] = str(nextDate.date)
+            user.words[wordNum]['nextDate'] = str(nextDate.date())
             user.words[wordNum]['sec'] = user.words[wordNum]['sec'] + 10
         elif user.words[wordNum]['sec']>=90:
             user.words.pop(wordNum)
         print(user.words[wordNum])
     user.inLesson = []
-    #models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson,
-    #                                                                'words':user.words})
+    models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson,
+                                                                    'words':user.words})
     db.session.commit()
     buttons = [{'Главная кнопка':{'Ничего':1}}]
     post = poster(bot,userId,textWordEnd,buttons=buttons,ed=ed,message_id=message_id) 
