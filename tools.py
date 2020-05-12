@@ -6,7 +6,7 @@ import json
 import csv
 from conf import *
 from io import StringIO
-from datetime import datetime
+from datetime import datetime,date,timedelta
 import time
 from tele_bot_tools import *
 import random
@@ -32,7 +32,7 @@ def show(userId,commands):
 def addWord(userId,commands,callId):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     bot.answer_callback_query(callId, text=pickWordMsg)
-    user.words.update({commands['word']:0})
+    user.words.update({commands['word']:{'nextDate':date.today(),'sec':0}})
     models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
     models.telegram_users.query.filter_by(userId = userId).update({'newWordsToday': user.newWordsToday +1})
     db.session.commit()
@@ -132,6 +132,11 @@ def wordTeacher(userId,ed=False,message_id=None):
     return post
 def flashTrns(userId,wordNum,callId):
     word = models.words.query.filter_by(ident = int(wordNum)).first()
+    user = models.telegram_users.query.filter_by(userId = userId).first()
+    user.words.update({wordNum:0})
+    models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
+    db.session.commit()
+
     bot.answer_callback_query(callId, text=word.translate)
 """def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
