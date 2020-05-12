@@ -99,16 +99,17 @@ def wordTeacher(userId,ed=False,message_id=None):
     wordsNum = []
     sentenceNum = -1
     words = []
+    today = str(date.today())
     for wordNum in user.words:
         word = models.words.query.filter_by(ident = int(wordNum)).first()
-        if wordNum not in user.inLesson and sentenceNum == -1:
+        if wordNum not in user.inLesson and sentenceNum == -1 and user.words[wordNum]['nextDate'] == today:
             sentenceNum = word.sentence
             wordsNum.append(int(wordNum))
             user.inLesson.append(wordNum)
             words.append(word.word)
             butWords.update({word.word:{'flashTrns':wordNum}})
             continue
-        if wordNum not in user.inLesson and sentenceNum == word.sentence:
+        if wordNum not in user.inLesson and sentenceNum == word.sentence and user.words[wordNum]['nextDate'] == today:
             wordsNum.append(int(wordNum))
             user.inLesson.append(wordNum)
             words.append(word.word)
@@ -125,19 +126,41 @@ def wordTeacher(userId,ed=False,message_id=None):
 
     models.telegram_users.query.filter_by(userId = userId).update({'inLesson': user.inLesson})
     db.session.commit()
-    buttons = [butWords,{'>>':{'show':{'nextWord':{'ed':True}}}}]
-    post = poster(bot,userId,msg,buttons=buttons,ed=ed,message_id=message_id) 
-    print('wordTeacher')
-    print(post)
+    if butWords == {}:
+        post = wordEnder(userId,ed=ed,message_id=message_id)
+    else:
+        buttons = [butWords,{'>>':{'show':{'nextWord':{'ed':True}}}}]
+        post = poster(bot,userId,msg,buttons=buttons,ed=ed,message_id=message_id) 
     return post
 def flashTrns(userId,wordNum,callId):
     word = models.words.query.filter_by(ident = int(wordNum)).first()
     user = models.telegram_users.query.filter_by(userId = userId).first()
-    user.words.update({wordNum:0})
+    user.words.update({wordNum:{'sec':0,'nextDate':str(date.today()+timedelta(days=1))}})
     models.telegram_users.query.filter_by(userId = userId).update({'words': user.words})
     db.session.commit()
 
     bot.answer_callback_query(callId, text=word.translate)
+
+def wordEnder(userId,ed=False,message_id=None):
+    user = models.telegram_users.query.filter_by(userId = userId).first()
+    for wordNum in user.inLesson:
+        if user.words[wordNum]['sec']<90:
+            curDate = datetime.strptime(user.words[wordNum]['nextDate'],'%Y-%m-%d')
+            user.words[wordNum]['sec'] = user.words[wordNum]['sec'] + 10
+            if user.words[wordNum]['sec']<70:
+                nextDate = curDate + timedelta(days=1)
+            else:
+                nextDate = curDate + timedelta(days=14)
+            user.words[wordNum]['nextDate'] = str(nextDate.date)
+        elif user.words[wordNum]['sec']>=90:
+            user.words.pop(wordNum)
+    user.inLesson = []
+    db.session.commit()
+    buttons = [{'Главная кнопка':{'Ничего':1}}]
+    post = poster(bot,userId,msg,buttons=buttons,ed=ed,message_id=message_id) 
+    return post
+
+
 """def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
     tasks = models.waiting.query.all()
