@@ -164,9 +164,10 @@ def wordMolest(user):
     '''
     Достаёт пользователя если есть просроченные слова
     '''
-    buttons = [{'Начать':{'show':{'nextWord':{'ed':False}}}}]
+    buttons = [{'Начать':{'show':{'nextWord':{'ed':True}}}}]
     poster(bot,user.userId,text=textWordMolest,buttons=buttons)
     models.telegram_users.query.filter_by(userId=user.userId).update({'molestWordDate':date.today().strftime('%Y-%m-%d')})
+    db.session.commit()
 
 def checkTask():
     print('checkTask')
@@ -178,7 +179,7 @@ def checkTask():
             isDayMolest = datetime.strptime(user.molestWordDate,'%Y-%m-%d').date() == now.date()
         else:
             isDayMolest = False
-            
+
         for numWord in user.words:
             if datetime.strptime(user.words[numWord]['nextDate'],'%Y-%m-%d').date()<now.date() and not isDayMolest:
                 wordMolest(user)
