@@ -35,3 +35,4 @@ class telegram_users(db.Model):
     curStBook = db.Column(db.Integer)
     newWordsToday = db.Column(db.Integer)
     inLesson = db.Column(ARRAY(db.Text))
+    molestWordDate = db.Column(db.Text)

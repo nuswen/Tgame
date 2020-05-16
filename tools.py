@@ -138,7 +138,6 @@ def flashTrns(userId,wordNum,callId):
     db.session.commit()
 
     bot.answer_callback_query(callId, text=word.translate)
-
 def wordEnder(userId,ed=False,message_id=None):
     user = models.telegram_users.query.filter_by(userId = userId).first()
     for wordNum in user.inLesson:
@@ -161,34 +160,24 @@ def wordEnder(userId,ed=False,message_id=None):
     buttons = [{'Главная кнопка':{'Ничего':1}}]
     post = poster(bot,userId,textWordEnd,buttons=buttons,ed=ed,message_id=message_id) 
     return post
+def wordMolest(user):
+    '''
+    Достаёт пользователя если есть просроченные слова
+    '''
+    buttons = [{'Начать':{'show':{'nextWord':{'ed':False}}}}]
+    poster(bot,user.userId,text=textWordMolest,buttons=buttons)
+    models.telegram_users.query.filter_by(userId=user.userId).update({'molestWordDate':date.today().strftime('%Y-%m-%d')})
 
-
-"""def checkTask():
-    ts = int(datetime.timestamp(datetime.utcnow()))
-    tasks = models.waiting.query.all()
-    for task in tasks:
-        if task.time<=ts:
-            if task.link:
-                poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
-                db.session.delete(task)
-                db.session.commit() 
-                storyGo(task.userId,link=task.link)
-            else:
-                poster(bot,task.userId,text=task.message,buttons=task.answers,doc=task.doc,img=task.image)
-                db.session.delete(task)
-                db.session.commit()
-                continue
-        elif (task.time-ts)<15:
-            if task.image:
-                bot.send_chat_action(task.userId,"upload_photo")
-            elif task.audio:
-                bot.send_chat_action(task.userId,"record_audio")
-            elif task.doc:
-                bot.send_chat_action(task.userId,"upload_document")
-            elif task.message:
-                bot.send_chat_action(task.userId,"typing")
+def checkTask():
+    print('checkTask')
+    now = datetime.now()
+    users = models.telegram_users.query.all()
+    for user in users:
+        for numWord in user.words:
+            if datetime.strptime(user.words[numWord]['nextDate'],'%Y-%m-%d')<now.date() 
+            and datetime.strptime(user.molestWordDate,'%Y-%m-%d')!=now.date():
+                wordMolest(user)
     time.sleep(1)
-"""
 
 """def molest():
     ts = int(datetime.timestamp(datetime.utcnow()))

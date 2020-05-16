@@ -5,3 +5,4 @@ pickWordMsg = environ['Pick_word_msg']
 textWordEnd = environ['textWordEnd']
 wordsAtTime = int(environ['How_much_word_at_time'])
 wordsInRow = int(environ['How_much_word_in_row'])
+textWordMolest = int(environ['textWordMolest'])
