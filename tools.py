@@ -174,8 +174,7 @@ def checkTask():
     users = models.telegram_users.query.all()
     for user in users:
         for numWord in user.words:
-            if datetime.strptime(user.words[numWord]['nextDate'],'%Y-%m-%d')<now.date() 
-            and datetime.strptime(user.molestWordDate,'%Y-%m-%d')!=now.date():
+            if datetime.strptime(user.words[numWord]['nextDate'],'%Y-%m-%d')<now.date() and datetime.strptime(user.molestWordDate,'%Y-%m-%d')!=now.date():
                 wordMolest(user)
     time.sleep(1)
 
