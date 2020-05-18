@@ -32,7 +32,12 @@ def activate_job():
 @app.route("/"+environ['token'], methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
+    return "ok", 200
+
+@app.route("/patreon/", methods=['POST'])
+def getMessage():
+    print(request.stream.read().decode("utf-8"))
+    return "ok", 200
 
 bot.remove_webhook()
 bot.set_webhook(url=environ['app_url']+environ['token'])
