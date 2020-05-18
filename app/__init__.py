@@ -38,6 +38,7 @@ def getMessage():
 @app.route("/patreon/", methods=['POST'])
 def patreon():
     data= json.loads(request.stream.read().decode("utf-8"))
+    print(data)
     print(data['data']['email'])
     print(data['data']['patron_status'])
     return "ok", 200
