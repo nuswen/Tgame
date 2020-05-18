@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import telebot
 import threading
 import time
+import json
 
 bot = telebot.TeleBot(environ['token'])
 
@@ -36,7 +37,9 @@ def getMessage():
 
 @app.route("/patreon/", methods=['POST'])
 def patreon():
-    print(request.stream.read().decode("utf-8"))
+    data= json.loads(request.stream.read().decode("utf-8"))
+    print(data['data']['email'])
+    print(data['data']['patron_status'])
     return "ok", 200
 
 bot.remove_webhook()
