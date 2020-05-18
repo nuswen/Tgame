@@ -39,8 +39,12 @@ def getMessage():
 def patreon():
     data= json.loads(request.stream.read().decode("utf-8"))
     print(data)
-    print(data['data']['email'])
-    print(data['data']['patron_status'])
+    if data['data']['type'] == 'member':
+        print(data['data']['attributes']['email'])
+        print(data['data']['attributes']['patron_status'])
+    elif data['data']['type'] == 'pledge':
+        print(data['included'][0]['attributes']['email'])
+        print(data['included'][1]['amount_cents'])
     return "ok", 200
 
 bot.remove_webhook()
