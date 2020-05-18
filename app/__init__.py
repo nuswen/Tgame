@@ -35,7 +35,7 @@ def getMessage():
     return "ok", 200
 
 @app.route("/patreon/", methods=['POST'])
-def getMessage():
+def patreon():
     print(request.stream.read().decode("utf-8"))
     return "ok", 200
 
