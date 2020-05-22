@@ -58,7 +58,9 @@ def sentence(user,ed=False,startWord = -1):
             wordButtons.update({word.translate:{'nothing':'nothing'}})
         else:
             wordButtons.update({word.word:{'addWord':{'word':word.ident,'startWord':startWord}}})
-    controlButtons.update({'>>':{'show':{'nextSentence':0}}})
+    nextSen = models.book.query.filter_by(ident = user.curSentence+1).first()
+    if nextSen:
+        controlButtons.update({'>>':{'show':{'nextSentence':0}}})
     if startWord != book.firstLastWord['start']:
         controlButtons.update({'<':{'show':{'sentence':startWord-wordsAtTime}}})
     if isBreak:
