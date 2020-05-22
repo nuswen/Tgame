@@ -170,7 +170,7 @@ def wordMolest(user):
     db.session.commit()
 
 def checkTask():
-    print('checkTask')
+    #print('checkTask')
     now = datetime.now()
     users = models.telegram_users.query.all()
     for user in users:
