@@ -183,6 +183,7 @@ def storyGo(userId,answer = None, link=None):
                                 betweenBranch = betweenBranch,
                                 affront = affront,
                                 stopShare = needRef)
+        print(newTask)
         db.session.add(newTask)
         db.session.commit()   
         return newStoryRow     
