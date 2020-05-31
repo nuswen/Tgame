@@ -188,7 +188,7 @@ def storyGo(userId,answer = None, link=None):
         db.session.commit()   
         return newStoryRow     
     except Exception as e:
-        print(e)
+        print('Exception',e)
 
 def checkTask():
     ts = int(datetime.timestamp(datetime.utcnow()))
