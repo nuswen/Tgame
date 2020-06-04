@@ -127,67 +127,67 @@ def storyGo(userId,answer = None, link=None):
             specPost(userId,"affront")
         elif waiting.betweenBranch:
             specPost(userId,"betweenBranch")
-    # try:
-    if answer:
-        newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
-    elif link:
-        newStoryRow = models.story.query.filter_by(ident = link).first()
-    else:
-        newStoryRow = storyRow
-    
-    #TODO ловить ответы не по сценарию и отправлять ответ из списка
-    if not newStoryRow:
-        print('не')
-        return '5'
-    ts = int(datetime.timestamp(datetime.utcnow()))
-    user.point = newStoryRow.ident
-    user.lastTime = ts
-    betweenBranch = False
-    affront = False
-    needRef = 0
-    if user.curBranch != newStoryRow.branch:
-        newBranchTime = json.loads(user.branchTime)
-        print(newBranchTime)
-        newBranchTime[user.curBranch].update({'end':ts})
-        newBranchTime.update({newStoryRow.branch:{"start":ts}})
-        newBranchTime = json.dumps(newBranchTime)
-        user.branchTime = newBranchTime
-        betweenBranch = True
-    if newStoryRow.speclink:
-        for i in newStoryRow.speclink:
-            if i == "tag":
-                if newStoryRow.speclink[i] == "affront":
-                    affront = True
-            elif  i == "stopShare":
-                needRef = int(newStoryRow.speclink[i])
-                
-    user.curBranch = newStoryRow.branch
-    if newStoryRow.timeout:
-        timeout = ts+newStoryRow.timeout
-    else:
-        timeout = ts + int(environ['std_timeout'])
-    
-    msg = newStoryRow.message
-    if 'shareUrl' in newStoryRow.message:
-        shareUrl = 'https://t.me/{botName}?start={sharePoint}'.format(botName=environ['botName'], sharePoint=str(user.userId))
-        msg = newStoryRow.message.format(shareUrl=shareUrl)
-    newTask = models.waiting(userId = userId, 
-                            message = msg,
-                            answers = newStoryRow.answers,
-                            doc = newStoryRow.doc,
-                            image = newStoryRow.photo,
-                            audio = newStoryRow.audio,
-                            time = timeout,
-                            link = newStoryRow.link,
-                            betweenBranch = betweenBranch,
-                            affront = affront,
-                            stopShare = needRef)
-    print(newTask)
-    db.session.add(newTask)
-    db.session.commit()   
-    return newStoryRow     
-    """ except Exception as e:
-        print('Exception',e) """
+    try:
+        if answer:
+            newStoryRow = models.story.query.filter_by(ident = storyRow.answers[answer]).first()
+        elif link:
+            newStoryRow = models.story.query.filter_by(ident = link).first()
+        else:
+            newStoryRow = storyRow
+        
+        #TODO ловить ответы не по сценарию и отправлять ответ из списка
+        if not newStoryRow:
+            print('не')
+            return '5'
+        ts = int(datetime.timestamp(datetime.utcnow()))
+        user.point = newStoryRow.ident
+        user.lastTime = ts
+        betweenBranch = False
+        affront = False
+        needRef = 0
+        if user.curBranch != newStoryRow.branch:
+            newBranchTime = json.loads(user.branchTime)
+            print(newBranchTime)
+            newBranchTime[user.curBranch].update({'end':ts})
+            newBranchTime.update({newStoryRow.branch:{"start":ts}})
+            newBranchTime = json.dumps(newBranchTime)
+            user.branchTime = newBranchTime
+            betweenBranch = True
+        if newStoryRow.speclink:
+            for i in newStoryRow.speclink:
+                if i == "tag":
+                    if newStoryRow.speclink[i] == "affront":
+                        affront = True
+                elif  i == "stopShare":
+                    needRef = int(newStoryRow.speclink[i])
+                    
+        user.curBranch = newStoryRow.branch
+        if newStoryRow.timeout:
+            timeout = ts+newStoryRow.timeout
+        else:
+            timeout = ts + int(environ['std_timeout'])
+        
+        msg = newStoryRow.message
+        if 'shareUrl' in newStoryRow.message:
+            shareUrl = 'https://t.me/{botName}?start={sharePoint}'.format(botName=environ['botName'], sharePoint=str(user.userId))
+            msg = newStoryRow.message.format(shareUrl=shareUrl)
+        newTask = models.waiting(userId = userId, 
+                                message = msg,
+                                answers = newStoryRow.answers,
+                                doc = newStoryRow.doc,
+                                image = newStoryRow.photo,
+                                audio = newStoryRow.audio,
+                                time = timeout,
+                                link = newStoryRow.link,
+                                betweenBranch = betweenBranch,
+                                affront = affront,
+                                stopShare = needRef)
+        print(newTask)
+        db.session.add(newTask)
+        db.session.commit()   
+        return newStoryRow     
+    except Exception as e:
+        print('Exception',e)
 
 def checkTask():
     # ts = int(datetime.timestamp(datetime.utcnow()))
