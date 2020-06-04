@@ -191,7 +191,7 @@ def storyGo(userId,answer = None, link=None):
 
 def checkTask():
     # ts = int(datetime.timestamp(datetime.utcnow()))
-    ts = 0
+    ts = 2591270020
     tasks = models.waiting.query.all()
     for task in tasks:
         if task.stopShare != 0:
