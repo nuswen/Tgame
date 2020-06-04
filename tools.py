@@ -190,7 +190,8 @@ def storyGo(userId,answer = None, link=None):
         print('Exception',e) """
 
 def checkTask():
-    ts = int(datetime.timestamp(datetime.utcnow()))
+    # ts = int(datetime.timestamp(datetime.utcnow()))
+    ts = 0
     tasks = models.waiting.query.all()
     for task in tasks:
         if task.stopShare != 0:
