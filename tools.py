@@ -134,7 +134,7 @@ def storyGo(userId,answer = None, link=None):
             newStoryRow = models.story.query.filter_by(ident = link).first()
         else:
             newStoryRow = storyRow
-        
+
         #TODO ловить ответы не по сценарию и отправлять ответ из списка
         if not newStoryRow:
             print('не')
@@ -160,13 +160,13 @@ def storyGo(userId,answer = None, link=None):
                         affront = True
                 elif  i == "stopShare":
                     needRef = int(newStoryRow.speclink[i])
-                    
+
         user.curBranch = newStoryRow.branch
         if newStoryRow.timeout:
             timeout = ts+newStoryRow.timeout
         else:
             timeout = ts + int(environ['std_timeout'])
-        
+
         msg = newStoryRow.message
         if 'shareUrl' in newStoryRow.message:
             shareUrl = 'https://t.me/{botName}?start={sharePoint}'.format(botName=environ['botName'], sharePoint=str(user.userId))
@@ -190,8 +190,8 @@ def storyGo(userId,answer = None, link=None):
         print('Exception',e)
 
 def checkTask():
-    # ts = int(datetime.timestamp(datetime.utcnow()))
-    ts = 2591270020
+    ts = int(datetime.timestamp(datetime.utcnow()))
+    # ts = 2591270020
     tasks = models.waiting.query.all()
     for task in tasks:
         if task.stopShare != 0:
